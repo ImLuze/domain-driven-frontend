@@ -1,0 +1,22 @@
+overwrite: true
+schema: ${REACT_APP_API_URL}
+documents: src/**/*.graphql
+generates:
+  src/models/schema.d.ts:
+    plugins:
+      - typescript
+  src/:
+    preset: near-operation-file
+    presetConfig:
+      baseTypesPath: models/schema.d.ts
+      extension: .ts
+      folder: models
+    plugins:
+      - typescript-operations
+      - typescript-react-apollo
+      - fragment-matcher
+    config:
+      omitOperationSuffix: true
+  ./graphql.schema.json:
+    plugins:
+      - introspection

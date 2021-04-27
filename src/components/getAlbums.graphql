@@ -1,0 +1,12 @@
+query getAlbums($options: PageQueryOptions) {
+    albums(options: $options) {
+        data {
+            id
+            title
+            user {
+                id
+                username
+            }
+        }
+    }
+}
