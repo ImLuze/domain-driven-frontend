@@ -12,6 +12,7 @@
             {
                 "devDependencies": [
                     "**/*.test.ts",
+                    "**/*.test.tsx",
                     "./src/setupTests.ts",
                     "./src/mocks/*"
                 ]
