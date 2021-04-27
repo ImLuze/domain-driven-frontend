@@ -1,22 +1,22 @@
 import { FunctionComponent, StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import './style/index.css';
-import reportWebVitals from './reportWebVitals';
 import { ApolloProvider } from '@apollo/client';
-import { client } from './client';
+import reportWebVitals from './reportWebVitals';
+import worker from './mocks/worker';
+import client from './client';
 
 if (process.env.NODE_ENV === 'development') {
-  const { worker } = require('./mocks/browser');
   worker.start();
 }
 
-export const App: FunctionComponent = () => (
+const App: FunctionComponent = () => (
   <StrictMode>
     <ApolloProvider client={client}>
       App
     </ApolloProvider>
   </StrictMode>
-)
+);
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
