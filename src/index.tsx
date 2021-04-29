@@ -2,9 +2,11 @@ import { FunctionComponent, StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import './style/index.css';
 import { ApolloProvider } from '@apollo/client';
+import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import worker from './mocks/worker';
 import client from './client';
+import Routes from './Routes';
 
 if (process.env.NODE_ENV === 'development') {
   worker.start();
@@ -13,7 +15,9 @@ if (process.env.NODE_ENV === 'development') {
 const App: FunctionComponent = () => (
   <StrictMode>
     <ApolloProvider client={client}>
-      App
+      <BrowserRouter>
+        <Routes />
+      </BrowserRouter>
     </ApolloProvider>
   </StrictMode>
 );

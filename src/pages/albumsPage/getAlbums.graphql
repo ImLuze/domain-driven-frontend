@@ -1,0 +1,16 @@
+# Each page has it's own graphql requests. This keeps it easier to reason about why certain fields are being requested.
+# The code generator will create a `models` directory for each page and add the types for each graphql file to that page-specific directory.
+# A reference to the GraphQL schema is maintained in the global models directory.
+
+query getAlbums($options: PageQueryOptions) {
+  albums(options: $options) {
+    data {
+      id
+      title
+      user {
+        id
+        username
+      }
+    }
+  }
+}

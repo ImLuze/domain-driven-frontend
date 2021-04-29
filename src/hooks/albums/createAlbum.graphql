@@ -1,0 +1,9 @@
+# Each interaction layer domain has it's own graphql requests. This keeps it easier to reason about why certain fields are being requested.
+# The code generator will create a `models` directory for each interaction layer domain and add the types for each graphql file to that domain-specific directory.
+# A reference to the GraphQL schema is maintained in the global models directory.
+
+mutation createAlbum($input: CreateAlbumInput!) {
+    createAlbum(input: $input) {
+        id
+    }
+}

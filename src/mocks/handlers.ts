@@ -1,9 +1,58 @@
 import { graphql, RequestHandler } from 'msw';
 
+/**
+ * Here we define what API request returns in our mock.
+ *
+ * TODO: Find out if co-locating these to their corresponding page is beneficial.
+ * TODO: If needed, find a way to co-locate mock data to it's corresponding Page.
+ * TODO: Add correct type inference.
+*/
+
+export const MOCK_ALBUMS = [
+  { id: '0', title: 'title 0', user: { id: '0', username: 'username 0' } },
+  { id: '1', title: 'title 1', user: { id: '1', username: 'username 1' } },
+  { id: '2', title: 'title 2', user: { id: '2', username: 'username 2' } },
+  { id: '3', title: 'title 3', user: { id: '3', username: 'username 3' } },
+  { id: '4', title: 'title 4', user: { id: '4', username: 'username 4' } },
+  { id: '5', title: 'title 5', user: { id: '5', username: 'username 5' } },
+];
+
 const handlers: RequestHandler[] = [
-  graphql.query('getTodos', (req, res, ctx) => res(ctx.data({
+  graphql.query('getAlbums', (req, res, ctx) => res(ctx.data({
+    albums: {
+      data: MOCK_ALBUMS,
+    },
+  }))),
+
+  graphql.mutation('createAlbum', (req, res, ctx) => res(ctx.data({
     data: {
-      todos: [{ id: '0', text: 'todo', isCompleted: false }],
+      createAlbum: {
+        id: '6',
+        title: req.body?.variables.title,
+        user: {
+          id: req.body?.variables.userId,
+          username: `username-${req.body?.variables.userId}`,
+        },
+      },
+    },
+  }))),
+
+  graphql.mutation('updateAlbum', (req, res, ctx) => res(ctx.data({
+    data: {
+      updateAlbum: {
+        id: req.body?.variables.id,
+        title: req.body?.variables.title,
+        user: {
+          id: req.body?.variables.userId,
+          username: `username-${req.body?.variables.userId}`,
+        },
+      },
+    },
+  }))),
+
+  graphql.mutation('deleteAlbum', (req, res, ctx) => res(ctx.data({
+    data: {
+      deleteAlbum: true,
     },
   }))),
 ];
