@@ -121,7 +121,7 @@ describe('AlbumCard', () => {
           });
 
           expect(props.operations.updateAlbum).toBeCalledTimes(1);
-          expect(props.operations.updateAlbum).toBeCalledWith(props.album.id, { authorId: props.author.id, title: 'valid title' });
+          expect(props.operations.updateAlbum).toBeCalledWith(props.album.id, { title: 'valid title' });
         });
 
         it('sets isEditing to false', () => {

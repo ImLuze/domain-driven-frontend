@@ -14,7 +14,7 @@ import useAlbumCard, { AlbumCardProps } from './useAlbumCard';
  *    Determines how a component looks.
  *
  * 3. The UI Logic (use<name>.ts):
- *    Determines which specific models and operations this component has access too and
+ *    Determines which specific models and operations this component has access to and
  *    what happens if an operation gets called.
  */
 

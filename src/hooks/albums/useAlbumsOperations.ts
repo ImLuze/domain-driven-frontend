@@ -1,6 +1,7 @@
-import { CreateAlbumInput } from '../../models/schema';
+import { useHistory } from 'react-router';
+import { CreateAlbumInput as CreateAlbumInputDTO, UpdateAlbumInput as UpdateAlbumInputDTO } from '../../models/schema';
 import useValidator, { Validate } from '../validator/useValidator';
-import { Album } from './models/album';
+import { Album, Photo } from './models/album';
 import { useCreateAlbum } from './models/createAlbum';
 import { useDeleteAlbum } from './models/deleteAlbum';
 import { useUpdateAlbum } from './models/updateAlbum';
@@ -13,53 +14,76 @@ import { useUpdateAlbum } from './models/updateAlbum';
  * This hook can be combined with `useAlbums` if both are small or easy to manage.
  */
 
-export interface AlbumInput {
+export interface CreateAlbumInput {
   title: Album['title'];
-  authorId: Album['author']['id'];
+  photos: Omit<Photo, 'id'>[]
+}
+
+export interface UpdateAlbumInput {
+  title?: Album['title'];
+  photos?: Omit<Photo, 'id'>[]
 }
 
 export interface AlbumsOperations {
-  createAlbum: (input: AlbumInput) => void;
-  updateAlbum: (id: Album['id'], input: AlbumInput) => void;
-  deleteAlbum: (id: Album['id']) => void;
-  validateTitle: Validate<AlbumInput['title']>
+  createAlbum: (input: CreateAlbumInput) => Promise<void>;
+  updateAlbum: (id: Album['id'], input: UpdateAlbumInput) => Promise<void>;
+  deleteAlbum: (id: Album['id']) => Promise<void>;
+  validateTitle: Validate<Album['title']>;
+  validatePhotos: Validate<CreateAlbumInput['photos']>;
 }
 
 type Operations = AlbumsOperations;
 
 const useAlbumsOperations = (): Operations => {
+  const history = useHistory();
   const [createAlbumMutation] = useCreateAlbum();
   const [updateAlbumMutation] = useUpdateAlbum();
   const [deleteAlbumMutation] = useDeleteAlbum();
 
-  const validateTitle = useValidator<AlbumInput['title']>([
-    { rule: (input: string) => !RegExp(/-/).test(input), errorMessage: 'Contains an illegal character.' },
-    { rule: (input: string) => input.length >= 5, errorMessage: 'Should be at least 5 characters' },
+  const validateTitle = useValidator<CreateAlbumInput['title']>([
+    { rule: (input) => !RegExp(/-/).test(input), errorMessage: 'Contains an illegal character.' },
+    { rule: (input) => input.length >= 5, errorMessage: 'Should be at least 5 characters.' },
   ]);
 
-  const toInputDTO = (input: AlbumInput): CreateAlbumInput => ({
+  const validatePhotos = useValidator<CreateAlbumInput['photos']>([
+    { rule: (photos) => photos.length > 0, errorMessage: 'Should contain at least 1 photo.' },
+  ]);
+
+  const toCreateInputDTO = (input: CreateAlbumInput): CreateAlbumInputDTO => ({
     title: input.title,
-    userId: input.authorId,
+    userId: '0',
   });
 
-  const createAlbum: Operations['createAlbum'] = (input) => {
-    const { isValid } = validateTitle(input.title);
+  const toUpdateInputDTO = (input: UpdateAlbumInput): UpdateAlbumInputDTO => ({
+    title: input.title,
+    userId: '0',
+  });
 
-    if (isValid) {
-      createAlbumMutation({ variables: { input: toInputDTO(input) } });
+  const createAlbum: Operations['createAlbum'] = async (input) => {
+    const { isValid: isTitleValid } = validateTitle(input.title);
+    const { isValid: isPhotosValid } = validatePhotos(input.photos);
+
+    if (isTitleValid && isPhotosValid) {
+      const { data } = await createAlbumMutation({ variables: { input: toCreateInputDTO(input) } });
+      const newAlbumId = data?.createAlbum?.id;
+
+      if (newAlbumId) {
+        history.push(`/albums/${newAlbumId}`);
+      }
     }
   };
 
-  const updateAlbum: Operations['updateAlbum'] = (id, input) => {
-    const { isValid } = validateTitle(input.title);
+  const updateAlbum: Operations['updateAlbum'] = async (id, input) => {
+    const isTitleValid = input.title ? validateTitle(input.title).isValid : true;
+    const isPhotosValid = input.photos ? validatePhotos(input.photos).isValid : true;
 
-    if (isValid) {
-      updateAlbumMutation({ variables: { id, input: toInputDTO(input) } });
+    if (isTitleValid && isPhotosValid) {
+      await updateAlbumMutation({ variables: { id, input: toUpdateInputDTO(input) } });
     }
   };
 
-  const deleteAlbum: Operations['deleteAlbum'] = (id) => {
-    deleteAlbumMutation({ variables: { id } });
+  const deleteAlbum: Operations['deleteAlbum'] = async (id) => {
+    await deleteAlbumMutation({ variables: { id } });
   };
 
   return ({
@@ -67,6 +91,7 @@ const useAlbumsOperations = (): Operations => {
     updateAlbum,
     deleteAlbum,
     validateTitle,
+    validatePhotos,
   });
 };
 

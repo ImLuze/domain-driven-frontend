@@ -1,6 +1,7 @@
 import { FunctionComponent } from 'react';
 import { Switch } from 'react-router';
 import { Route } from 'react-router-dom';
+import AddAlbumPage from './pages/addAlbumPage/AddAlbumPage';
 import AlbumsPage from './pages/albumsPage/AlbumsPage';
 
 /**
@@ -12,6 +13,7 @@ import AlbumsPage from './pages/albumsPage/AlbumsPage';
 const Routes: FunctionComponent = () => (
   <Switch>
     <Route exact path="/" component={AlbumsPage} />
+    <Route path="/albums/add" component={AddAlbumPage} />
   </Switch>
 );
 

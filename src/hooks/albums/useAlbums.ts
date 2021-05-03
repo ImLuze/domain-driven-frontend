@@ -1,7 +1,9 @@
 import { ApolloError } from '@apollo/client';
 import { AppLogic } from '../../models/logic';
-import { Maybe, Query, User as UserDTO } from '../../models/schema';
-import { Album, Author } from './models/album';
+import {
+  Maybe, Photo as PhotoDTO, Album as AlbumDTO, Query, User as UserDTO,
+} from '../../models/schema';
+import { Album, Author, Photo } from './models/album';
 import useAlbumsOperations, { AlbumsOperations } from './useAlbumsOperations';
 
 /**
@@ -34,11 +36,18 @@ const useAlbums = (albumsAPI: AlbumsAPI): AppLogic<Operations, Models> => {
     username: user.username || 'unknown',
   });
 
-  const dataToAlbum = (album: typeof albumsData[number]): Album => ({
+  const photoDataToPhoto = (photo: Maybe<Maybe<PhotoDTO>>): Photo => ({
+    id: photo?.id || '',
+    alt: photo?.title || 'no title',
+    url: photo?.url || '',
+  });
+
+  const dataToAlbum = (album: Maybe<AlbumDTO>): Album => ({
     id: album?.id || '',
     title: album?.title || '',
     url: `/albums/${album?.id}`,
     author: userToAuthor(album?.user || {}),
+    photos: (album?.photos?.data || []).map(photoDataToPhoto),
   });
 
   const albums = albumsData.map(dataToAlbum);

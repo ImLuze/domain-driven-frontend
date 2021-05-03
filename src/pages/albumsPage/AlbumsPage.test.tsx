@@ -2,12 +2,11 @@ import { ApolloProvider } from '@apollo/client';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { RequestHandler, graphql } from 'msw';
-import { FunctionComponent } from 'react';
-import { createMemoryHistory } from 'history';
-import { Router } from 'react-router';
+import { MemoryRouter } from 'react-router';
 import client from '../../client';
-import AlbumsPage from './AlbumsPage';
 import server from '../../mocks/server';
+import { PageComponent } from '../../models/PageComponent';
+import Routes from '../../Routes';
 
 /**
  * Here we list all features which the Page enables and run integration tests against them.
@@ -22,17 +21,13 @@ const mockErrorResponse: RequestHandler = graphql.query('getAlbums', (req, res, 
   ctx.errors([{ message: 'Not found' }]),
 ));
 
-const MockedAlbumsPage: FunctionComponent = () => {
-  const history = createMemoryHistory();
-
-  return (
-    <ApolloProvider client={client}>
-      <Router history={history}>
-        <AlbumsPage />
-      </Router>
-    </ApolloProvider>
-  );
-};
+const MockedAlbumsPage: PageComponent = () => (
+  <ApolloProvider client={client}>
+    <MemoryRouter initialEntries={['/']}>
+      <Routes />
+    </MemoryRouter>
+  </ApolloProvider>
+);
 
 describe('AlbumsPage', () => {
   describe('when albums are loading', () => {
@@ -125,16 +120,22 @@ describe('AlbumsPage', () => {
       render(<MockedAlbumsPage />);
 
       await screen.findAllByText(/title/);
+      expect(screen.queryByRole('heading', { name: /Albums/ })).toBeInTheDocument();
 
-      expect(screen.getAllByRole('link', { name: /to album/ })[0]).toHaveAttribute('href', '/albums/0');
+      userEvent.click(screen.getAllByRole('link', { name: /Go to album/ })[0]);
+      expect(screen.queryByRole('heading', { name: /Albums/ })).not.toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: /title 0/ })).toBeInTheDocument();
     });
 
     it('allows the user to navigate to the create new album page', async () => {
       render(<MockedAlbumsPage />);
 
       await screen.findAllByText(/title/);
+      expect(screen.queryByRole('heading', { name: /Albums/ })).toBeInTheDocument();
 
-      expect(screen.getAllByRole('link', { name: /new album/ })[0]).toHaveAttribute('href', '/albums/add');
+      userEvent.click(screen.getAllByRole('link', { name: /Add new album/ })[0]);
+      expect(screen.queryByRole('heading', { name: /Albums/ })).not.toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: /Add new album/ })).toBeInTheDocument();
     });
   });
 });

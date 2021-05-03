@@ -49,7 +49,7 @@ const useAlbumCard = (props: AlbumCardProps): UILogic<Operations, Models> => {
   useEffect(() => {
     const onEnterClick = (event: KeyboardEvent): void => {
       if (event.key === 'Enter' && isTitleValid) {
-        updateAlbum(album.id, { authorId: author.id, title });
+        updateAlbum(album.id, { title });
         setIsEditing(false);
       }
     };
