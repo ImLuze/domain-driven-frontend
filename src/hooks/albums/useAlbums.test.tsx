@@ -24,8 +24,14 @@ import { CreateAlbumInput, UpdateAlbumInput } from './useAlbumsOperations';
  * (More on this: https://github.com/ImLuze/frontend-architecture-demo#testing)
  */
 
-const MOCK_SUCCESSFUL: AlbumsAPI = {
+const MOCK_SUCCESSFUL_ALBUMS: AlbumsAPI = {
   data: { albums: { data: MOCK_ALBUMS } },
+  loading: false,
+  error: undefined,
+};
+
+const MOCK_SUCCESSFUL_ALBUM: AlbumsAPI = {
+  data: { album: MOCK_ALBUMS[0] },
   loading: false,
   error: undefined,
 };
@@ -44,22 +50,82 @@ const MOCK_FAILED: AlbumsAPI = {
 
 const EXPECTED_ALBUMS: Album[] = [
   {
-    id: '0', title: 'title 0', author: { id: '0', username: 'username 0' }, url: '/albums/0', photos: [{ id: '0', alt: 'title 0', url: '/photo/0' }],
+    id: '0',
+    title: 'title 0',
+    url: '/albums/0',
+    author: { id: '0', username: 'username 0' },
+    photos: [
+      { id: '0', alt: 'title 0', url: '/photo/0' },
+      { id: '1', alt: 'title 1', url: '/photo/1' },
+      { id: '2', alt: 'title 2', url: '/photo/2' },
+      { id: '3', alt: 'title 3', url: '/photo/3' },
+      { id: '4', alt: 'title 4', url: '/photo/4' },
+    ],
   },
   {
-    id: '1', title: 'title 1', author: { id: '1', username: 'username 1' }, url: '/albums/1', photos: [{ id: '1', alt: 'title 1', url: '/photo/1' }],
+    id: '1',
+    title: 'title 1',
+    url: '/albums/1',
+    author: { id: '1', username: 'username 1' },
+    photos: [
+      { id: '0', alt: 'title 0', url: '/photo/0' },
+      { id: '1', alt: 'title 1', url: '/photo/1' },
+      { id: '2', alt: 'title 2', url: '/photo/2' },
+      { id: '3', alt: 'title 3', url: '/photo/3' },
+      { id: '4', alt: 'title 4', url: '/photo/4' },
+    ],
   },
   {
-    id: '2', title: 'title 2', author: { id: '2', username: 'username 2' }, url: '/albums/2', photos: [{ id: '2', alt: 'title 2', url: '/photo/2' }],
+    id: '2',
+    title: 'title 2',
+    url: '/albums/2',
+    author: { id: '2', username: 'username 2' },
+    photos: [
+      { id: '0', alt: 'title 0', url: '/photo/0' },
+      { id: '1', alt: 'title 1', url: '/photo/1' },
+      { id: '2', alt: 'title 2', url: '/photo/2' },
+      { id: '3', alt: 'title 3', url: '/photo/3' },
+      { id: '4', alt: 'title 4', url: '/photo/4' },
+    ],
   },
   {
-    id: '3', title: 'title 3', author: { id: '3', username: 'username 3' }, url: '/albums/3', photos: [{ id: '3', alt: 'title 3', url: '/photo/3' }],
+    id: '3',
+    title: 'title 3',
+    url: '/albums/3',
+    author: { id: '3', username: 'username 3' },
+    photos: [
+      { id: '0', alt: 'title 0', url: '/photo/0' },
+      { id: '1', alt: 'title 1', url: '/photo/1' },
+      { id: '2', alt: 'title 2', url: '/photo/2' },
+      { id: '3', alt: 'title 3', url: '/photo/3' },
+      { id: '4', alt: 'title 4', url: '/photo/4' },
+    ],
   },
   {
-    id: '4', title: 'title 4', author: { id: '4', username: 'username 4' }, url: '/albums/4', photos: [{ id: '4', alt: 'title 4', url: '/photo/4' }],
+    id: '4',
+    title: 'title 4',
+    url: '/albums/4',
+    author: { id: '4', username: 'username 4' },
+    photos: [
+      { id: '0', alt: 'title 0', url: '/photo/0' },
+      { id: '1', alt: 'title 1', url: '/photo/1' },
+      { id: '2', alt: 'title 2', url: '/photo/2' },
+      { id: '3', alt: 'title 3', url: '/photo/3' },
+      { id: '4', alt: 'title 4', url: '/photo/4' },
+    ],
   },
   {
-    id: '5', title: 'title 5', author: { id: '5', username: 'username 5' }, url: '/albums/5', photos: [{ id: '5', alt: 'title 5', url: '/photo/5' }],
+    id: '5',
+    title: 'title 5',
+    url: '/albums/5',
+    author: { id: '5', username: 'username 5' },
+    photos: [
+      { id: '0', alt: 'title 0', url: '/photo/0' },
+      { id: '1', alt: 'title 1', url: '/photo/1' },
+      { id: '2', alt: 'title 2', url: '/photo/2' },
+      { id: '3', alt: 'title 3', url: '/photo/3' },
+      { id: '4', alt: 'title 4', url: '/photo/4' },
+    ],
   },
 ];
 
@@ -71,17 +137,36 @@ const wrapper: FunctionComponent = ({ children }) => (
 
 describe('useAlbums', () => {
   describe('has a set of models', () => {
-    it('returns albums correctly mapped from the API albums', async () => {
+    it('returns albums correctly mapped from the API', async () => {
       const { result, rerender } = renderHook((props: AlbumsAPI) => useAlbums(props), {
         wrapper, initialProps: MOCK_LOADING,
       });
       expect(result.current.models.albums).toStrictEqual([]);
 
-      rerender(MOCK_SUCCESSFUL);
+      rerender(MOCK_SUCCESSFUL_ALBUMS);
       expect(result.current.models.albums).toStrictEqual(EXPECTED_ALBUMS);
+
+      rerender(MOCK_SUCCESSFUL_ALBUM);
+      expect(result.current.models.albums).toStrictEqual([EXPECTED_ALBUMS[0]]);
 
       rerender(MOCK_FAILED);
       expect(result.current.models.albums).toStrictEqual([]);
+    });
+
+    it('returns the first album correctly mapped from the API', async () => {
+      const { result, rerender } = renderHook((props: AlbumsAPI) => useAlbums(props), {
+        wrapper, initialProps: MOCK_LOADING,
+      });
+      expect(result.current.models.album).toStrictEqual(undefined);
+
+      rerender(MOCK_SUCCESSFUL_ALBUMS);
+      expect(result.current.models.album).toStrictEqual(EXPECTED_ALBUMS[0]);
+
+      rerender(MOCK_SUCCESSFUL_ALBUM);
+      expect(result.current.models.album).toStrictEqual(EXPECTED_ALBUMS[0]);
+
+      rerender(MOCK_FAILED);
+      expect(result.current.models.album).toStrictEqual(undefined);
     });
 
     it('returns the albums query loading state', () => {
@@ -90,7 +175,7 @@ describe('useAlbums', () => {
       });
       expect(result.current.models.isLoading).toBe(true);
 
-      rerender(MOCK_SUCCESSFUL);
+      rerender(MOCK_SUCCESSFUL_ALBUMS);
       expect(result.current.models.isLoading).toBe(false);
 
       rerender(MOCK_FAILED);
@@ -103,7 +188,7 @@ describe('useAlbums', () => {
       });
       expect(result.current.models.error).toBeUndefined();
 
-      rerender(MOCK_SUCCESSFUL);
+      rerender(MOCK_SUCCESSFUL_ALBUMS);
       expect(result.current.models.error).toBeUndefined();
 
       rerender(MOCK_FAILED);
@@ -115,14 +200,14 @@ describe('useAlbums', () => {
     describe('validateTitle', () => {
       describe('validates an album title', () => {
         it('does not allow fewer than 5 character', () => {
-          const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL), { wrapper });
+          const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
 
           expect(result.current.operations.validateTitle('abcd')).toStrictEqual(expect.objectContaining({ isValid: false }));
           expect(result.current.operations.validateTitle('abcde')).toStrictEqual(expect.objectContaining({ isValid: true }));
         });
 
         it('should include no -', () => {
-          const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL), { wrapper });
+          const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
 
           expect(result.current.operations.validateTitle('abcd-')).toStrictEqual(expect.objectContaining({ isValid: false }));
           expect(result.current.operations.validateTitle('abcde')).toStrictEqual(expect.objectContaining({ isValid: true }));
@@ -133,7 +218,7 @@ describe('useAlbums', () => {
     describe('validatePhotos', () => {
       it('does not allow photos to be empty', () => {
         const PHOTOS: CreateAlbumInput['photos'] = [{ alt: 'title 0', url: '/photo/0' }];
-        const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL), { wrapper });
+        const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
 
         expect(result.current.operations.validatePhotos([]))
           .toStrictEqual(expect.objectContaining({ isValid: false }));
@@ -150,7 +235,7 @@ describe('useAlbums', () => {
             called: true, loading: false, data: undefined, error: undefined, client,
           }]);
           const PHOTOS: CreateAlbumInput['photos'] = [{ alt: 'new photo', url: './new-photo' }];
-          const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL), { wrapper });
+          const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
 
           expect(createAlbumMutation).toHaveBeenCalledTimes(0);
 
@@ -176,7 +261,7 @@ describe('useAlbums', () => {
             called: true, loading: false, data: undefined, error: undefined, client,
           }]);
           const PHOTOS: CreateAlbumInput['photos'] = [{ alt: 'new photo', url: './new-photo' }];
-          const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL), { wrapper });
+          const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
           expect(createAlbumMutation).toHaveBeenCalledTimes(0);
 
           act(() => {
@@ -199,7 +284,7 @@ describe('useAlbums', () => {
           jest.spyOn(useUpdateAlbum, 'useUpdateAlbum').mockReturnValue([updateAlbumMutation, {
             called: true, loading: false, data: undefined, error: undefined, client,
           }]);
-          const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL), { wrapper });
+          const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
           expect(updateAlbumMutation).toHaveBeenCalledTimes(0);
 
           act(() => {
@@ -216,7 +301,7 @@ describe('useAlbums', () => {
             called: true, loading: false, data: undefined, error: undefined, client,
           }]);
 
-          const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL), { wrapper });
+          const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
           expect(updateAlbumMutation).toHaveBeenCalledTimes(0);
 
           act(() => {
@@ -233,7 +318,7 @@ describe('useAlbums', () => {
             called: true, loading: false, data: undefined, error: undefined, client,
           }]);
           const PHOTOS: UpdateAlbumInput['photos'] = [{ alt: 'new photo', url: './new-photo' }];
-          const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL), { wrapper });
+          const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
           expect(updateAlbumMutation).toHaveBeenCalledTimes(0);
 
           act(() => {
@@ -249,7 +334,7 @@ describe('useAlbums', () => {
           jest.spyOn(useUpdateAlbum, 'useUpdateAlbum').mockReturnValue([updateAlbumMutation, {
             called: true, loading: false, data: undefined, error: undefined, client,
           }]);
-          const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL), { wrapper });
+          const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
           expect(updateAlbumMutation).toHaveBeenCalledTimes(0);
 
           act(() => {
@@ -266,7 +351,7 @@ describe('useAlbums', () => {
         jest.spyOn(useDeleteAlbum, 'useDeleteAlbum').mockReturnValue([deleteAlbumMutation, {
           called: true, loading: false, data: undefined, error: undefined, client,
         }]);
-        const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL), { wrapper });
+        const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
 
         expect(deleteAlbumMutation).toHaveBeenCalledTimes(0);
 

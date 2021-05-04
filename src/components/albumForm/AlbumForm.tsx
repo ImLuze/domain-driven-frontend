@@ -1,4 +1,5 @@
 import { FunctionComponent } from 'react';
+import Gallery from '../gallery/Gallery';
 import AlbumFormStyle from './AlbumFormStyle';
 import useAlbumForm, { AlbumFormProps } from './useAlbumForm';
 
@@ -25,17 +26,10 @@ const AlbumForm: FunctionComponent<AlbumFormProps> = (props) => {
   } = operations;
   const { errorMessage, photos, title } = models;
 
-  const renderPhoto = (photo: typeof photos[number], index: number): JSX.Element => (
-    <div className="photo">
-      <img src={photo.url} alt={photo.alt} />
-      <button type="button" onClick={() => removePhotoAtIndex(index)}>Remove photo</button>
-    </div>
-  );
-
   return (
     <AlbumFormStyle>
       <div className="title-input">
-        {errorMessage.title && <p>{errorMessage.title}</p>}
+        <p>{errorMessage.title}</p>
         <input
           value={title}
           placeholder="Add a title"
@@ -51,9 +45,9 @@ const AlbumForm: FunctionComponent<AlbumFormProps> = (props) => {
           multiple={false}
         />
       </label>
-      {errorMessage.photos && <p>{errorMessage.photos}</p>}
-      <div className="photos">
-        {photos.map(renderPhoto)}
+      <div className="photos-container">
+        {errorMessage.photos && <p>{errorMessage.photos}</p>}
+        <Gallery photos={photos} action={removePhotoAtIndex} callToAction="Remove photo" />
       </div>
       <button type="button" onClick={saveAlbum}>Add album</button>
     </AlbumFormStyle>

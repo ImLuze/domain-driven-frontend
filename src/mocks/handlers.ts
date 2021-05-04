@@ -12,22 +12,22 @@ import { CreateAlbum } from '../hooks/albums/models/createAlbum';
 
 export const MOCK_ALBUMS: Album[] = [
   {
-    id: '0', title: 'title 0', user: { id: '0', username: 'username 0' }, photos: { data: [{ id: '0', title: 'title 0', url: '/photo/0' }] },
+    id: '0', title: 'title 0', user: { id: '0', username: 'username 0' }, photos: { data: [{ id: '0', title: 'title 0', url: '/photo/0' }, { id: '1', title: 'title 1', url: '/photo/1' }, { id: '2', title: 'title 2', url: '/photo/2' }, { id: '3', title: 'title 3', url: '/photo/3' }, { id: '4', title: 'title 4', url: '/photo/4' }] },
   },
   {
-    id: '1', title: 'title 1', user: { id: '1', username: 'username 1' }, photos: { data: [{ id: '1', title: 'title 1', url: '/photo/1' }] },
+    id: '1', title: 'title 1', user: { id: '1', username: 'username 1' }, photos: { data: [{ id: '0', title: 'title 0', url: '/photo/0' }, { id: '1', title: 'title 1', url: '/photo/1' }, { id: '2', title: 'title 2', url: '/photo/2' }, { id: '3', title: 'title 3', url: '/photo/3' }, { id: '4', title: 'title 4', url: '/photo/4' }] },
   },
   {
-    id: '2', title: 'title 2', user: { id: '2', username: 'username 2' }, photos: { data: [{ id: '2', title: 'title 2', url: '/photo/2' }] },
+    id: '2', title: 'title 2', user: { id: '2', username: 'username 2' }, photos: { data: [{ id: '0', title: 'title 0', url: '/photo/0' }, { id: '1', title: 'title 1', url: '/photo/1' }, { id: '2', title: 'title 2', url: '/photo/2' }, { id: '3', title: 'title 3', url: '/photo/3' }, { id: '4', title: 'title 4', url: '/photo/4' }] },
   },
   {
-    id: '3', title: 'title 3', user: { id: '3', username: 'username 3' }, photos: { data: [{ id: '3', title: 'title 3', url: '/photo/3' }] },
+    id: '3', title: 'title 3', user: { id: '3', username: 'username 3' }, photos: { data: [{ id: '0', title: 'title 0', url: '/photo/0' }, { id: '1', title: 'title 1', url: '/photo/1' }, { id: '2', title: 'title 2', url: '/photo/2' }, { id: '3', title: 'title 3', url: '/photo/3' }, { id: '4', title: 'title 4', url: '/photo/4' }] },
   },
   {
-    id: '4', title: 'title 4', user: { id: '4', username: 'username 4' }, photos: { data: [{ id: '4', title: 'title 4', url: '/photo/4' }] },
+    id: '4', title: 'title 4', user: { id: '4', username: 'username 4' }, photos: { data: [{ id: '0', title: 'title 0', url: '/photo/0' }, { id: '1', title: 'title 1', url: '/photo/1' }, { id: '2', title: 'title 2', url: '/photo/2' }, { id: '3', title: 'title 3', url: '/photo/3' }, { id: '4', title: 'title 4', url: '/photo/4' }] },
   },
   {
-    id: '5', title: 'title 5', user: { id: '5', username: 'username 5' }, photos: { data: [{ id: '5', title: 'title 5', url: '/photo/5' }] },
+    id: '5', title: 'title 5', user: { id: '5', username: 'username 5' }, photos: { data: [{ id: '0', title: 'title 0', url: '/photo/0' }, { id: '1', title: 'title 1', url: '/photo/1' }, { id: '2', title: 'title 2', url: '/photo/2' }, { id: '3', title: 'title 3', url: '/photo/3' }, { id: '4', title: 'title 4', url: '/photo/4' }] },
   },
 ];
 
@@ -40,7 +40,7 @@ type MockCreateAlbumResponse = (
 
 export const MOCK_CREATE_ALBUM_RESPONSE: MockCreateAlbumResponse = ({ title, userId }) => ({
   createAlbum: {
-    id: '6',
+    id: '0',
     title,
     user: {
       id: userId,
@@ -54,6 +54,10 @@ const handlers: RequestHandler[] = [
     albums: {
       data: MOCK_ALBUMS,
     },
+  }))),
+
+  graphql.query('getAlbumById', (req, res, ctx) => res(ctx.data({
+    album: MOCK_ALBUMS[req.body?.variables.id],
   }))),
 
   graphql.mutation('createAlbum', (req, res, ctx) => res(ctx.data(

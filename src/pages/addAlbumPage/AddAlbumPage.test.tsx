@@ -7,6 +7,14 @@ import * as useCreateAlbum from '../../hooks/albums/models/createAlbum';
 import { PageComponent } from '../../models/PageComponent';
 import Routes from '../../Routes';
 
+/**
+ * Here we list all features which the Page enables and run integration tests against them.
+ * The Page Component is the ideal candidate for this as it enables multiple features at once.
+ *
+ * This is generally the first file you create when you add a new page, or the first one you edit
+ * when you fix a bug or add a new feature.
+*/
+
 const MockedAddAlbumPage: PageComponent = () => (
   <ApolloProvider client={client}>
     <MemoryRouter initialEntries={['/albums/add']}>
@@ -116,7 +124,7 @@ describe('AddAlbumPage', () => {
           expect(createAlbumMutation).toHaveBeenCalledTimes(1);
         });
 
-        it('goes to the album detail page', () => {
+        it('goes to the album detail page', async () => {
           const file = new File(['test'], 'test.png', { type: 'image/png' });
           render(<MockedAddAlbumPage />);
 
@@ -124,8 +132,10 @@ describe('AddAlbumPage', () => {
           userEvent.upload(screen.getByLabelText(/Add a photo/), file);
           userEvent.click(screen.getByRole('button', { name: /Add album/ }));
 
+          await screen.findByRole('heading', { name: /title 0/ });
+
           expect(screen.queryByRole('heading', { name: /Add new album/ })).not.toBeInTheDocument();
-          expect(screen.getByRole('heading', { name: /new title/ })).toBeInTheDocument();
+          expect(screen.getByRole('heading', { name: /title 0/ })).toBeInTheDocument();
         });
       });
     });

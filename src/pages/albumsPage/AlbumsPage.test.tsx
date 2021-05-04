@@ -33,18 +33,17 @@ describe('AlbumsPage', () => {
   describe('when albums are loading', () => {
     it('lets the user know that albums are loading', () => {
       render(<MockedAlbumsPage />);
-
       expect(screen.getByText(/Loading/)).toBeInTheDocument();
     });
   });
 
-  describe('when an error has occured', () => {
+  describe('when an error has occurred', () => {
     it('lets the user know that something went wrong', async () => {
       server.use(mockErrorResponse);
       render(<MockedAlbumsPage />);
+      expect(screen.queryByText(/went wrong/)).not.toBeInTheDocument();
 
       await screen.findByText(/went wrong/);
-
       expect(screen.getByText(/went wrong/)).toBeInTheDocument();
     });
   });
@@ -120,11 +119,11 @@ describe('AlbumsPage', () => {
       render(<MockedAlbumsPage />);
 
       await screen.findAllByText(/title/);
-      expect(screen.queryByRole('heading', { name: /Albums/ })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: /Albums/ })).toBeInTheDocument();
 
       userEvent.click(screen.getAllByRole('link', { name: /Go to album/ })[0]);
+
       expect(screen.queryByRole('heading', { name: /Albums/ })).not.toBeInTheDocument();
-      expect(screen.getByRole('heading', { name: /title 0/ })).toBeInTheDocument();
     });
 
     it('allows the user to navigate to the create new album page', async () => {

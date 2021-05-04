@@ -1,4 +1,5 @@
 import { FunctionComponent } from 'react';
+import { Link } from 'react-router-dom';
 import AlbumCardStyle from './AlbumCardStyle';
 import useAlbumCard, { AlbumCardProps } from './useAlbumCard';
 
@@ -37,7 +38,7 @@ const AlbumCard: FunctionComponent<AlbumCardProps> = (props) => {
           </div>
         )}
       <p>{username}</p>
-      <a href={url}>Go to album</a>
+      <Link to={url}>Go to album</Link>
     </AlbumCardStyle>
   );
 };

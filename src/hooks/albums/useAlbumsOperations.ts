@@ -64,8 +64,8 @@ const useAlbumsOperations = (): Operations => {
     const { isValid: isPhotosValid } = validatePhotos(input.photos);
 
     if (isTitleValid && isPhotosValid) {
-      const { data } = await createAlbumMutation({ variables: { input: toCreateInputDTO(input) } });
-      const newAlbumId = data?.createAlbum?.id;
+      const result = await createAlbumMutation({ variables: { input: toCreateInputDTO(input) } });
+      const newAlbumId = result?.data?.createAlbum?.id;
 
       if (newAlbumId) {
         history.push(`/albums/${newAlbumId}`);
