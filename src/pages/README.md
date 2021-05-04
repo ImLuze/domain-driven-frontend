@@ -1,8 +1,8 @@
 # Page Component
 
-This is a page component. A page component (also known as container component) serves as the **controller** of the application. It serves as a glue layer between the **interaction** layer and the **presentation** layer (The view).
+These are the page components. A page component (also known as container component) serves as the **controller** of the application. It serves as a glue layer between the **interaction** layer and the **presentation** layer (The view).
 
-These components are unique per application. While presentational components and interaction layer logic are easily reused throughout multiple projects. The glue layer inbetween is usually not.
+These components are unique per application. While presentational components and interaction layer logic are easily reused throughout multiple projects. The glue layer between is usually not.
 
 ---
 

@@ -62,7 +62,6 @@ describe('AddAlbumPage', () => {
     it('allows the user to remove a photo from the album', () => {
       render(<MockedAddAlbumPage />);
       const file = new File(['test'], 'test.png', { type: 'image/png' });
-
       userEvent.upload(screen.getByLabelText(/Add a photo/), file);
       expect(screen.getByAltText(/test.png/)).toHaveAttribute('src', '/photo/0');
 
@@ -87,12 +86,10 @@ describe('AddAlbumPage', () => {
             called: true, loading: false, data: undefined, error: undefined, client,
           }]);
           render(<MockedAddAlbumPage />);
-
           expect(createAlbumMutation).toHaveBeenCalledTimes(0);
 
           userEvent.type(screen.getByPlaceholderText(/title/), 'new-title');
           userEvent.click(screen.getByRole('button', { name: /Add album/ }));
-
           expect(createAlbumMutation).toHaveBeenCalledTimes(0);
         });
 
@@ -101,7 +98,6 @@ describe('AddAlbumPage', () => {
 
           userEvent.type(screen.getByPlaceholderText(/title/), 'new-title');
           userEvent.click(screen.getByRole('button', { name: /Add album/ }));
-
           expect(screen.getByRole('heading', { name: /Add new album/ })).toBeInTheDocument();
         });
       });
@@ -114,13 +110,11 @@ describe('AddAlbumPage', () => {
             called: true, loading: false, data: undefined, error: undefined, client,
           }]);
           render(<MockedAddAlbumPage />);
-
           expect(createAlbumMutation).toHaveBeenCalledTimes(0);
 
           userEvent.type(screen.getByPlaceholderText(/title/), 'new title');
           userEvent.upload(screen.getByLabelText(/Add a photo/), file);
           userEvent.click(screen.getByRole('button', { name: /Add album/ }));
-
           expect(createAlbumMutation).toHaveBeenCalledTimes(1);
         });
 
@@ -133,7 +127,6 @@ describe('AddAlbumPage', () => {
           userEvent.click(screen.getByRole('button', { name: /Add album/ }));
 
           await screen.findByRole('heading', { name: /title 0/ });
-
           expect(screen.queryByRole('heading', { name: /Add new album/ })).not.toBeInTheDocument();
           expect(screen.getByRole('heading', { name: /title 0/ })).toBeInTheDocument();
         });

@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { CreateAlbumInput, AlbumsOperations } from '../../hooks/albums/useAlbumsOperations';
+import { Album } from '../../hooks/albums/models/album';
+import { CreateAlbumInput } from '../../hooks/albums/models/albumInput';
+import { ValidationResult } from '../../hooks/validator/models/ValidationResult';
 import { UILogic } from '../../models/logic';
 
 /**
@@ -14,9 +16,9 @@ import { UILogic } from '../../models/logic';
 
 export interface AlbumFormProps {
   operations: {
-    onSubmit: AlbumsOperations['createAlbum'];
-    validateTitle: AlbumsOperations['validateTitle'];
-    validatePhotos: AlbumsOperations['validatePhotos'];
+    onSubmit: (input: CreateAlbumInput) => void;
+    validateTitle: (title: Album['title']) => ValidationResult;
+    validatePhotos: (photos: Album['photos']) => ValidationResult;
   }
 }
 

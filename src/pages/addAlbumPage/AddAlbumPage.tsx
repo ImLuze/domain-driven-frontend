@@ -1,12 +1,12 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import AlbumForm from '../../components/albumForm/AlbumForm';
-import useAlbumsOperations from '../../hooks/albums/useAlbumsOperations';
+import useAlbums from '../../hooks/albums/useAlbums';
 import { PageComponent } from '../../models/PageComponent';
 import AddAlbumPageStyle from './AddAlbumPageStyle';
 
 const AddAlbumPage: PageComponent = () => {
-  const { createAlbum, validatePhotos, validateTitle } = useAlbumsOperations();
+  const { operations } = useAlbums();
+  const { createAlbum, validatePhotos, validateTitle } = operations;
 
   return (
     <AddAlbumPageStyle>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Author, Album } from '../../hooks/albums/models/album';
-import { AlbumsOperations } from '../../hooks/albums/useAlbumsOperations';
+import { UpdateAlbumInput } from '../../hooks/albums/models/albumInput';
+import { ValidationResult } from '../../hooks/validator/models/ValidationResult';
 import { UILogic } from '../../models/logic';
 
 /**
@@ -17,8 +18,8 @@ export interface AlbumCardProps {
   album: Pick<Album, 'id' | 'title' | 'url'>;
   author: Pick<Author, 'id' | 'username'>;
   operations: {
-    updateAlbum: AlbumsOperations['updateAlbum'];
-    validateTitle: AlbumsOperations['validateTitle'];
+    updateAlbum: (albumId: Album['id'], input: UpdateAlbumInput) => void;
+    validateTitle: (title: Album['title']) => ValidationResult;
   };
 }
 

@@ -1,8 +1,8 @@
 import { FunctionComponent } from 'react';
 import AlbumCard from '../../../../components/albumCard/AlbumCard';
+import { AlbumCardProps } from '../../../../components/albumCard/useAlbumCard';
 import Loader from '../../../../components/loader/Loader';
 import { Album } from '../../../../hooks/albums/models/album';
-import { AlbumsOperations } from '../../../../hooks/albums/useAlbumsOperations';
 import AlbumsSectionStyle from './AlbumsSectionStyle';
 
 /**
@@ -18,8 +18,8 @@ import AlbumsSectionStyle from './AlbumsSectionStyle';
  */
 
 interface Operations {
-  updateAlbum: AlbumsOperations['updateAlbum'];
-  validateTitle: AlbumsOperations['validateTitle'];
+  updateAlbum: AlbumCardProps['operations']['updateAlbum'];
+  validateTitle: AlbumCardProps['operations']['validateTitle'];
 }
 
 interface Props {

@@ -53,7 +53,6 @@ describe('AlbumsPage', () => {
       render(<MockedAlbumsPage />);
 
       await screen.findAllByText(/title/);
-
       expect(screen.getAllByRole('heading', { name: /title/ })).toHaveLength(6);
     });
 
@@ -63,37 +62,27 @@ describe('AlbumsPage', () => {
           render(<MockedAlbumsPage />);
 
           await screen.findAllByText(/title/);
-
           expect(screen.queryByText(/new title/)).not.toBeInTheDocument();
 
           userEvent.click(screen.getAllByRole('button', { name: /edit/ })[0]);
-
           userEvent.type(screen.getByRole('textbox'), '{backspace}{backspace}{backspace}{backspace}{backspace}{backspace}{backspace}');
           userEvent.type(screen.getByRole('textbox'), 'new-title');
-
           userEvent.keyboard('{Enter}');
-
           expect(screen.getByText(/illegal character/)).toBeInTheDocument();
 
           userEvent.type(screen.getByRole('textbox'), '{backspace}{backspace}{backspace}{backspace}{backspace}{backspace}{backspace}{backspace}{backspace}');
           userEvent.type(screen.getByRole('textbox'), 'abcd');
-
           userEvent.keyboard('{Enter}');
-
           expect(screen.getByText(/at least 5 characters/)).toBeInTheDocument();
         });
 
         it('does not update the title', () => {
           render(<MockedAlbumsPage />);
-
           expect(screen.queryByText(/new title/)).not.toBeInTheDocument();
 
           userEvent.click(screen.getAllByRole('button', { name: /edit/ })[0]);
-
           userEvent.type(screen.getByRole('textbox'), 'new-title');
-
           userEvent.keyboard('{Enter}');
-
           expect(screen.queryByText(/new-title/)).not.toBeInTheDocument();
         });
       });
@@ -101,15 +90,11 @@ describe('AlbumsPage', () => {
       describe('when the new title is valid', () => {
         it('updates the album title', () => {
           render(<MockedAlbumsPage />);
-
           expect(screen.queryByText(/new title/)).not.toBeInTheDocument();
 
           userEvent.click(screen.getAllByRole('button', { name: /edit/ })[0]);
-
           userEvent.type(screen.getByRole('textbox'), 'new title');
-
           userEvent.keyboard('{Enter}');
-
           expect(screen.getByText(/new title/)).toBeInTheDocument();
         });
       });
@@ -122,7 +107,6 @@ describe('AlbumsPage', () => {
       expect(screen.getByRole('heading', { name: /Albums/ })).toBeInTheDocument();
 
       userEvent.click(screen.getAllByRole('link', { name: /Go to album/ })[0]);
-
       expect(screen.queryByRole('heading', { name: /Albums/ })).not.toBeInTheDocument();
     });
 

@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import { CreateAlbumInput } from '../../hooks/albums/useAlbumsOperations';
+import { CreateAlbumInput } from '../../hooks/albums/models/albumInput';
 import useAlbumForm, { AlbumFormProps } from './useAlbumForm';
 
 const props: AlbumFormProps = {
@@ -30,6 +30,7 @@ describe('AlbumForm', () => {
       const { result } = renderHook(() => useAlbumForm(props));
       models = result.current.models;
     });
+
     it('returns an empty title', () => {
       expect(models.title).toBe('');
     });
@@ -75,9 +76,7 @@ describe('AlbumForm', () => {
         const { result } = renderHook(() => useAlbumForm(props));
         expect(result.current.models.photos).toHaveLength(0);
 
-        act(() => {
-          result.current.operations.addPhoto(PHOTO_FILE);
-        });
+        act(() => result.current.operations.addPhoto(PHOTO_FILE));
         expect(result.current.models.photos).toHaveLength(1);
       });
     });
@@ -88,14 +87,10 @@ describe('AlbumForm', () => {
         const { result } = renderHook(() => useAlbumForm(props));
         expect(result.current.models.photos).toHaveLength(0);
 
-        act(() => {
-          result.current.operations.addPhoto(PHOTO_FILE);
-        });
+        act(() => result.current.operations.addPhoto(PHOTO_FILE));
         expect(result.current.models.photos).toHaveLength(1);
 
-        act(() => {
-          result.current.operations.removePhotoAtIndex(0);
-        });
+        act(() => result.current.operations.removePhotoAtIndex(0));
         expect(result.current.models.photos).toHaveLength(0);
       });
     });
@@ -119,9 +114,7 @@ describe('AlbumForm', () => {
         const { result } = renderHook(() => useAlbumForm(props));
         expect(result.current.models.errorMessage.photos).toBeFalsy();
 
-        act(() => {
-          result.current.operations.saveAlbum();
-        });
+        act(() => result.current.operations.saveAlbum());
         expect(result.current.models.errorMessage.photos).toBe('error');
 
         act(() => result.current.operations.addPhoto(PHOTO_FILE));

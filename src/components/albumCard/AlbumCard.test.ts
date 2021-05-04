@@ -58,19 +58,12 @@ describe('AlbumCard', () => {
     describe('setIsEditing', () => {
       it('updates isEditing', () => {
         const { result } = renderHook(() => useAlbumCard(props));
-
         expect(result.current.models.isEditing).toBe(false);
 
-        act(() => {
-          result.current.operations.setIsEditing(true);
-        });
-
+        act(() => result.current.operations.setIsEditing(true));
         expect(result.current.models.isEditing).toBe(true);
 
-        act(() => {
-          result.current.operations.setIsEditing(false);
-        });
-
+        act(() => result.current.operations.setIsEditing(false));
         expect(result.current.models.isEditing).toBe(false);
       });
     });
@@ -78,31 +71,20 @@ describe('AlbumCard', () => {
     describe('setTitle', () => {
       it('updates the title', () => {
         const { result } = renderHook(() => useAlbumCard(props));
-
         expect(result.current.models.title).toBe(props.album.title);
 
-        act(() => {
-          result.current.operations.setTitle('another title');
-        });
-
+        act(() => result.current.operations.setTitle('another title'));
         expect(result.current.models.title).toBe('another title');
       });
 
       it('validates the title', () => {
         const { result } = renderHook(() => useAlbumCard(props));
-
         expect(result.current.models.errorMessage).toBeFalsy();
 
-        act(() => {
-          result.current.operations.setTitle('invalid title');
-        });
-
+        act(() => result.current.operations.setTitle('invalid title'));
         expect(result.current.models.errorMessage).toBe('error');
 
-        act(() => {
-          result.current.operations.setTitle('valid title');
-        });
-
+        act(() => result.current.operations.setTitle('valid title'));
         expect(result.current.models.errorMessage).toBeFalsy();
       });
     });
@@ -113,29 +95,19 @@ describe('AlbumCard', () => {
       describe('when the title is valid', () => {
         it('calls updateAlbum with the album id, author id and new title', () => {
           renderHook(() => useAlbumCard({ ...props, album: { ...props.album, title: 'valid title' } }));
-
           expect(props.operations.updateAlbum).not.toBeCalled();
 
-          act(() => {
-            userEvent.keyboard('{Enter}');
-          });
-
+          userEvent.keyboard('{Enter}');
           expect(props.operations.updateAlbum).toBeCalledTimes(1);
           expect(props.operations.updateAlbum).toBeCalledWith(props.album.id, { title: 'valid title' });
         });
 
         it('sets isEditing to false', () => {
           const { result } = renderHook(() => useAlbumCard({ ...props, album: { ...props.album, title: 'valid title' } }));
-          act(() => {
-            result.current.operations.setIsEditing(true);
-          });
-
+          act(() => result.current.operations.setIsEditing(true));
           expect(result.current.models.isEditing).toBe(true);
 
-          act(() => {
-            userEvent.keyboard('{Enter}');
-          });
-
+          userEvent.keyboard('{Enter}');
           expect(result.current.models.isEditing).toBe(false);
         });
       });
@@ -143,28 +115,18 @@ describe('AlbumCard', () => {
       describe('when the title is invalid', () => {
         it('does not call updateAlbum', () => {
           renderHook(() => useAlbumCard({ ...props, album: { ...props.album, title: 'invalid title' } }));
-
           expect(props.operations.updateAlbum).not.toBeCalled();
 
-          act(() => {
-            userEvent.keyboard('{Enter}');
-          });
-
+          userEvent.keyboard('{Enter}');
           expect(props.operations.updateAlbum).not.toBeCalled();
         });
 
         it('does not set isEditing to false', () => {
           const { result } = renderHook(() => useAlbumCard({ ...props, album: { ...props.album, title: 'invalid title' } }));
-          act(() => {
-            result.current.operations.setIsEditing(true);
-          });
-
+          act(() => result.current.operations.setIsEditing(true));
           expect(result.current.models.isEditing).toBe(true);
 
-          act(() => {
-            userEvent.keyboard('{Enter}');
-          });
-
+          userEvent.keyboard('{Enter}');
           expect(result.current.models.isEditing).toBe(true);
         });
       });

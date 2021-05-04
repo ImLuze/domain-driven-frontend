@@ -9,7 +9,7 @@ import { Album } from './models/album';
 import * as useCreateAlbum from './models/createAlbum';
 import * as useDeleteAlbum from './models/deleteAlbum';
 import * as useUpdateAlbum from './models/updateAlbum';
-import { CreateAlbumInput, UpdateAlbumInput } from './useAlbumsOperations';
+import { CreateAlbumInput, UpdateAlbumInput } from './models/albumInput';
 
 /**
  * This is a Unit Test for an Interaction layer hook.
@@ -138,9 +138,10 @@ const wrapper: FunctionComponent = ({ children }) => (
 describe('useAlbums', () => {
   describe('has a set of models', () => {
     it('returns albums correctly mapped from the API', async () => {
-      const { result, rerender } = renderHook((props: AlbumsAPI) => useAlbums(props), {
-        wrapper, initialProps: MOCK_LOADING,
-      });
+      const { result, rerender } = renderHook((props: AlbumsAPI) => useAlbums(props), { wrapper });
+      expect(result.current.models.albums).toStrictEqual([]);
+
+      rerender(MOCK_LOADING);
       expect(result.current.models.albums).toStrictEqual([]);
 
       rerender(MOCK_SUCCESSFUL_ALBUMS);
@@ -154,10 +155,11 @@ describe('useAlbums', () => {
     });
 
     it('returns the first album correctly mapped from the API', async () => {
-      const { result, rerender } = renderHook((props: AlbumsAPI) => useAlbums(props), {
-        wrapper, initialProps: MOCK_LOADING,
-      });
-      expect(result.current.models.album).toStrictEqual(undefined);
+      const { result, rerender } = renderHook((props: AlbumsAPI) => useAlbums(props), { wrapper });
+      expect(result.current.models.album).toBeUndefined();
+
+      rerender(MOCK_LOADING);
+      expect(result.current.models.album).toBeUndefined();
 
       rerender(MOCK_SUCCESSFUL_ALBUMS);
       expect(result.current.models.album).toStrictEqual(EXPECTED_ALBUMS[0]);
@@ -166,13 +168,14 @@ describe('useAlbums', () => {
       expect(result.current.models.album).toStrictEqual(EXPECTED_ALBUMS[0]);
 
       rerender(MOCK_FAILED);
-      expect(result.current.models.album).toStrictEqual(undefined);
+      expect(result.current.models.album).toBeUndefined();
     });
 
     it('returns the albums query loading state', () => {
-      const { result, rerender } = renderHook((props: AlbumsAPI) => useAlbums(props), {
-        wrapper, initialProps: MOCK_LOADING,
-      });
+      const { result, rerender } = renderHook((props: AlbumsAPI) => useAlbums(props), { wrapper });
+      expect(result.current.models.isLoading).toBe(false);
+
+      rerender(MOCK_LOADING);
       expect(result.current.models.isLoading).toBe(true);
 
       rerender(MOCK_SUCCESSFUL_ALBUMS);
@@ -183,9 +186,10 @@ describe('useAlbums', () => {
     });
 
     it('returns the albums query error response', () => {
-      const { result, rerender } = renderHook((props: AlbumsAPI) => useAlbums(props), {
-        wrapper, initialProps: MOCK_LOADING,
-      });
+      const { result, rerender } = renderHook((props: AlbumsAPI) => useAlbums(props), { wrapper });
+      expect(result.current.models.error).toBeUndefined();
+
+      rerender(MOCK_LOADING);
       expect(result.current.models.error).toBeUndefined();
 
       rerender(MOCK_SUCCESSFUL_ALBUMS);
@@ -236,12 +240,9 @@ describe('useAlbums', () => {
           }]);
           const PHOTOS: CreateAlbumInput['photos'] = [{ alt: 'new photo', url: './new-photo' }];
           const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
-
           expect(createAlbumMutation).toHaveBeenCalledTimes(0);
 
-          act(() => {
-            result.current.operations.createAlbum({ title: 'abcde', photos: PHOTOS });
-          });
+          act(() => result.current.operations.createAlbum({ title: 'abcde', photos: PHOTOS }));
           expect(createAlbumMutation).toHaveBeenCalledTimes(1);
         });
 
@@ -264,14 +265,10 @@ describe('useAlbums', () => {
           const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
           expect(createAlbumMutation).toHaveBeenCalledTimes(0);
 
-          act(() => {
-            result.current.operations.createAlbum({ title: 'abcd', photos: PHOTOS });
-          });
+          act(() => result.current.operations.createAlbum({ title: 'abcd', photos: PHOTOS }));
           expect(createAlbumMutation).toHaveBeenCalledTimes(0);
 
-          act(() => {
-            result.current.operations.createAlbum({ title: 'abcde', photos: [] });
-          });
+          act(() => result.current.operations.createAlbum({ title: 'abcde', photos: [] }));
           expect(createAlbumMutation).toHaveBeenCalledTimes(0);
         });
       });
@@ -287,9 +284,7 @@ describe('useAlbums', () => {
           const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
           expect(updateAlbumMutation).toHaveBeenCalledTimes(0);
 
-          act(() => {
-            result.current.operations.updateAlbum('0', { title: 'abcde' });
-          });
+          act(() => result.current.operations.updateAlbum('0', { title: 'abcde' }));
           expect(updateAlbumMutation).toHaveBeenCalledTimes(1);
         });
       });
@@ -304,9 +299,7 @@ describe('useAlbums', () => {
           const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
           expect(updateAlbumMutation).toHaveBeenCalledTimes(0);
 
-          act(() => {
-            result.current.operations.updateAlbum('0', { title: 'abcd' });
-          });
+          act(() => result.current.operations.updateAlbum('0', { title: 'abcd' }));
           expect(updateAlbumMutation).toHaveBeenCalledTimes(0);
         });
       });
@@ -321,9 +314,7 @@ describe('useAlbums', () => {
           const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
           expect(updateAlbumMutation).toHaveBeenCalledTimes(0);
 
-          act(() => {
-            result.current.operations.updateAlbum('0', { photos: PHOTOS });
-          });
+          act(() => result.current.operations.updateAlbum('0', { photos: PHOTOS }));
           expect(updateAlbumMutation).toHaveBeenCalledTimes(1);
         });
       });
@@ -337,9 +328,7 @@ describe('useAlbums', () => {
           const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
           expect(updateAlbumMutation).toHaveBeenCalledTimes(0);
 
-          act(() => {
-            result.current.operations.updateAlbum('0', { photos: [] });
-          });
+          act(() => result.current.operations.updateAlbum('0', { photos: [] }));
           expect(updateAlbumMutation).toHaveBeenCalledTimes(0);
         });
       });
@@ -352,13 +341,9 @@ describe('useAlbums', () => {
           called: true, loading: false, data: undefined, error: undefined, client,
         }]);
         const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
-
         expect(deleteAlbumMutation).toHaveBeenCalledTimes(0);
 
-        act(() => {
-          result.current.operations.deleteAlbum('0');
-        });
-
+        act(() => result.current.operations.deleteAlbum('0'));
         expect(deleteAlbumMutation).toHaveBeenCalledTimes(1);
       });
     });
