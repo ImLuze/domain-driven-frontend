@@ -1,3 +1,5 @@
+import { Album, Photo } from './album';
+
 export interface CreateAlbumInput {
   title: Album['title'];
   photos: Omit<Photo, 'id'>[]
