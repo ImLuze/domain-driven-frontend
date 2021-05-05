@@ -13,7 +13,7 @@ import { useGetAlbums } from './models/getAlbums';
  * (Note: These Page Components generally don't have any logic of their own.)
 */
 
-const AlbumsPage: PageComponent = () => {
+const AlbumsPage: PageComponent = ({ routes }) => {
 	const { operations, models } = useAlbums(useGetAlbums());
 	const { updateAlbum, validateTitle } = operations;
 	const { albums, isLoading, error } = models;
@@ -22,7 +22,7 @@ const AlbumsPage: PageComponent = () => {
 		<AlbumsPageStyle>
 			<header className="header">
 				<h1>Albums Page</h1>
-				<Link to="/albums/add">Add new album</Link>
+				<Link to={routes.albums.add}>Add new album</Link>
 			</header>
 			<AlbumsSection
 				albums={albums}

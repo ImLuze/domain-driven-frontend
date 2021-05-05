@@ -1,7 +1,7 @@
 import { ApolloError } from '@apollo/client';
-import { useHistory } from 'react-router';
 import { AppLogic } from '../../models/logic';
 import { Maybe, Album as AlbumDTO, Query } from '../../models/schema';
+import useRoutes from '../routes/useRoutes';
 import useValidator, { Validate } from '../validator/useValidator';
 import AlbumMapper from './AlbumMapper';
 import { Album } from './models/album';
@@ -40,10 +40,11 @@ interface Models {
 }
 
 const useAlbums = (albumsAPI?: AlbumsAPI): AppLogic<Operations, Models> => {
-	const history = useHistory();
+	const { operations: { goToAlbumDetail }, models: routes } = useRoutes();
 	const [createAlbumMutation] = useCreateAlbum();
 	const [updateAlbumMutation] = useUpdateAlbum();
 	const [deleteAlbumMutation] = useDeleteAlbum();
+	const mapper = new AlbumMapper(routes);
 
 	const validateTitle = useValidator<CreateAlbumInput['title']>([
 		{ rule: (input) => !RegExp(/-/).test(input), errorMessage: 'Contains an illegal character.' },
@@ -59,12 +60,12 @@ const useAlbums = (albumsAPI?: AlbumsAPI): AppLogic<Operations, Models> => {
 		const { isValid: isPhotosValid } = validatePhotos(input.photos);
 
 		if (isTitleValid && isPhotosValid) {
-			const inputDTO = AlbumMapper.createInputToCreateInputDTO(input);
+			const inputDTO = mapper.createInputToCreateInputDTO(input);
 			const result = await createAlbumMutation({ variables: { input: inputDTO } });
 			const newAlbumId = result?.data?.createAlbum?.id;
 
 			if (newAlbumId) {
-				history.push(`/albums/${newAlbumId}`);
+				goToAlbumDetail(newAlbumId);
 			}
 		}
 	};
@@ -74,7 +75,7 @@ const useAlbums = (albumsAPI?: AlbumsAPI): AppLogic<Operations, Models> => {
 		const isPhotosValid = input.photos ? validatePhotos(input.photos).isValid : true;
 
 		if (isTitleValid && isPhotosValid) {
-			const inputDTO = AlbumMapper.updateInputToUpdateInputDTO(input);
+			const inputDTO = mapper.updateInputToUpdateInputDTO(input);
 			await updateAlbumMutation({ variables: { id, input: inputDTO } });
 		}
 	};
@@ -96,7 +97,7 @@ const useAlbums = (albumsAPI?: AlbumsAPI): AppLogic<Operations, Models> => {
 	};
 
 	const albums = albumsAPI?.data
-		? extractAlbumDTOsFromData(albumsAPI.data).map(AlbumMapper.albumDTOToAlbum)
+		? extractAlbumDTOsFromData(albumsAPI.data).map(mapper.albumDTOToAlbum)
 		: [];
 
 	return {

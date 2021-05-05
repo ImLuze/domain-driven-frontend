@@ -4,7 +4,7 @@ import useAlbums from '../../hooks/albums/useAlbums';
 import { PageComponent } from '../../models/PageComponent';
 import AddAlbumPageStyle from './AddAlbumPageStyle';
 
-const AddAlbumPage: PageComponent = () => {
+const AddAlbumPage: PageComponent = ({ routes }) => {
 	const { operations } = useAlbums();
 	const { createAlbum, validatePhotos, validateTitle } = operations;
 
@@ -12,7 +12,7 @@ const AddAlbumPage: PageComponent = () => {
 		<AddAlbumPageStyle>
 			<header className="header">
 				<h1>Add new album</h1>
-				<Link to="/">Go back</Link>
+				<Link to={routes.home}>Go back</Link>
 			</header>
 			<AlbumForm
 				operations={{

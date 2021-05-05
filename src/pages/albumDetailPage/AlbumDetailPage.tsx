@@ -6,7 +6,7 @@ import { PageComponent } from '../../models/PageComponent';
 import AlbumDetailPageStyle from './AlbumDetailPageStyle';
 import { useGetAlbumById } from './models/getAlbumById';
 
-const AlbumDetailPage: PageComponent = () => {
+const AlbumDetailPage: PageComponent = ({ routes }) => {
 	const { id } = useParams<{ id: string }>();
 	const { models } = useAlbums(useGetAlbumById({ variables: { id } }));
 	const { album, isLoading, error } = models;
@@ -15,7 +15,7 @@ const AlbumDetailPage: PageComponent = () => {
 		<AlbumDetailPageStyle>
 			<div className="header">
 				<h1>{album?.title || 'album'}</h1>
-				<Link to="/">Back to overview</Link>
+				<Link to={routes.home}>Back to overview</Link>
 			</div>
 
 			<p className="author">{isLoading ? 'Loading...' : album?.author.username}</p>
