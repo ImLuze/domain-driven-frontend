@@ -20,38 +20,38 @@ import useAlbumForm, { AlbumFormProps } from './useAlbumForm';
  */
 
 const AlbumForm: FunctionComponent<AlbumFormProps> = (props) => {
-  const { operations, models } = useAlbumForm(props);
-  const {
-    addPhoto, removePhotoAtIndex, saveAlbum, setTitle,
-  } = operations;
-  const { errorMessage, photos, title } = models;
+	const { operations, models } = useAlbumForm(props);
+	const {
+		addPhoto, removePhotoAtIndex, saveAlbum, setTitle,
+	} = operations;
+	const { errorMessage, photos, title } = models;
 
-  return (
-    <AlbumFormStyle>
-      <div className="title-input">
-        <p>{errorMessage.title}</p>
-        <input
-          value={title}
-          placeholder="Add a title"
-          onChange={(event) => setTitle(event.target.value)}
-        />
-      </div>
-      <label htmlFor="upload">
-        Add a photo
-        <input
-          type="file"
-          id="upload"
-          onChange={(event) => event.target.files && addPhoto(event.target.files[0])}
-          multiple={false}
-        />
-      </label>
-      <div className="photos-container">
-        {errorMessage.photos && <p>{errorMessage.photos}</p>}
-        <Gallery photos={photos} action={removePhotoAtIndex} callToAction="Remove photo" />
-      </div>
-      <button type="button" onClick={saveAlbum}>Add album</button>
-    </AlbumFormStyle>
-  );
+	return (
+		<AlbumFormStyle>
+			<div className="title-input">
+				<p>{errorMessage.title}</p>
+				<input
+					value={title}
+					placeholder="Add a title"
+					onChange={(event) => setTitle(event.target.value)}
+				/>
+			</div>
+			<label htmlFor="upload">
+				Add a photo
+				<input
+					type="file"
+					id="upload"
+					onChange={(event) => event.target.files && addPhoto(event.target.files[0])}
+					multiple={false}
+				/>
+			</label>
+			<div className="photos-container">
+				{errorMessage.photos && <p>{errorMessage.photos}</p>}
+				<Gallery photos={photos} action={removePhotoAtIndex} callToAction="Remove photo" />
+			</div>
+			<button type="button" onClick={saveAlbum}>Add album</button>
+		</AlbumFormStyle>
+	);
 };
 
 export default AlbumForm;

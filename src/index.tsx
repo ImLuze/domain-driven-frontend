@@ -9,17 +9,17 @@ import client from './client';
 import Routes from './Routes';
 
 if (process.env.NODE_ENV === 'development') {
-  worker.start();
+	worker.start();
 }
 
 const App: FunctionComponent = () => (
-  <StrictMode>
-    <ApolloProvider client={client}>
-      <BrowserRouter>
-        <Routes />
-      </BrowserRouter>
-    </ApolloProvider>
-  </StrictMode>
+	<StrictMode>
+		<ApolloProvider client={client}>
+			<BrowserRouter>
+				<Routes />
+			</BrowserRouter>
+		</ApolloProvider>
+	</StrictMode>
 );
 
 ReactDOM.render(<App />, document.getElementById('root'));

@@ -13,32 +13,32 @@ import GalleryStyle from './GalleryStyle';
  */
 
 interface GalleryProps {
-  isLoading?: boolean;
-  photos: Pick<Photo, 'alt' | 'url'>[];
-  action?: (index: number) => void;
-  callToAction?: string;
+	isLoading?: boolean;
+	photos: Pick<Photo, 'alt' | 'url'>[];
+	action?: (index: number) => void;
+	callToAction?: string;
 }
 
 const Gallery: FunctionComponent<GalleryProps> = ({
-  photos, action, callToAction, isLoading,
+	photos, action, callToAction, isLoading,
 }) => {
-  const renderSkeletonPhoto = (): JSX.Element => (
-    <div className="skeleton photo" />
-  );
+	const renderSkeletonPhoto = (): JSX.Element => (
+		<div className="skeleton photo" />
+	);
 
-  const renderPhoto = (photo: GalleryProps['photos'][number], index: number): JSX.Element => (
-    <div className="photo">
-      <img src={photo.url} alt={photo.alt} />
-      {action && <button type="button" onClick={() => action(index)}>{callToAction}</button>}
-    </div>
-  );
+	const renderPhoto = (photo: GalleryProps['photos'][number], index: number): JSX.Element => (
+		<div className="photo">
+			<img src={photo.url} alt={photo.alt} />
+			{action && <button type="button" onClick={() => action(index)}>{callToAction}</button>}
+		</div>
+	);
 
-  return (
-    <GalleryStyle>
-      {isLoading && [0, 1, 2, 3, 4, 5, 6].map(renderSkeletonPhoto)}
-      {photos.map(renderPhoto)}
-    </GalleryStyle>
-  );
+	return (
+		<GalleryStyle>
+			{isLoading && [0, 1, 2, 3, 4, 5, 6].map(renderSkeletonPhoto)}
+			{photos.map(renderPhoto)}
+		</GalleryStyle>
+	);
 };
 
 export default Gallery;

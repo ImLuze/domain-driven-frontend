@@ -11,23 +11,23 @@ import { ValidationRule } from './models/ValidationRule';
 export type Validate<I> = (input: I) => ValidationResult;
 
 const useValidator = <I>(rules: ValidationRule<I>[]): Validate<I> => {
-  const validate: Validate<I> = (input) => {
-    const errorMessages: string[] = [];
+	const validate: Validate<I> = (input) => {
+		const errorMessages: string[] = [];
 
-    rules.forEach((rule) => {
-      if (!rule.rule(input)) {
-        errorMessages.push(rule.errorMessage);
-      }
-    });
+		rules.forEach((rule) => {
+			if (!rule.rule(input)) {
+				errorMessages.push(rule.errorMessage);
+			}
+		});
 
-    return {
-      isValid: errorMessages.length === 0,
-      errorMessage: errorMessages[0],
-      errorMessages,
-    };
-  };
+		return {
+			isValid: errorMessages.length === 0,
+			errorMessage: errorMessages[0],
+			errorMessages,
+		};
+	};
 
-  return validate;
+	return validate;
 };
 
 export default useValidator;

@@ -12,11 +12,11 @@ import AlbumsPage from './pages/albumsPage/AlbumsPage';
 */
 
 const Routes: FunctionComponent = () => (
-  <Switch>
-    <Route exact path="/" component={AlbumsPage} />
-    <Route path="/albums/add" component={AddAlbumPage} />
-    <Route path="/albums/:id" component={AlbumDetailPage} />
-  </Switch>
+	<Switch>
+		<Route exact path="/" component={AlbumsPage} />
+		<Route path="/albums/add" component={AddAlbumPage} />
+		<Route path="/albums/:id" component={AlbumDetailPage} />
+	</Switch>
 );
 
 export default Routes;

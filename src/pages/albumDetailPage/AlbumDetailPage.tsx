@@ -7,24 +7,24 @@ import AlbumDetailPageStyle from './AlbumDetailPageStyle';
 import { useGetAlbumById } from './models/getAlbumById';
 
 const AlbumDetailPage: PageComponent = () => {
-  const { id } = useParams<{ id: string }>();
-  const { models } = useAlbums(useGetAlbumById({ variables: { id } }));
-  const { album, isLoading, error } = models;
+	const { id } = useParams<{ id: string }>();
+	const { models } = useAlbums(useGetAlbumById({ variables: { id } }));
+	const { album, isLoading, error } = models;
 
-  return (
-    <AlbumDetailPageStyle>
-      <div className="header">
-        <h1>{album?.title || 'album'}</h1>
-        <Link to="/">Back to overview</Link>
-      </div>
+	return (
+		<AlbumDetailPageStyle>
+			<div className="header">
+				<h1>{album?.title || 'album'}</h1>
+				<Link to="/">Back to overview</Link>
+			</div>
 
-      <p className="author">{isLoading ? 'Loading...' : album?.author.username}</p>
+			<p className="author">{isLoading ? 'Loading...' : album?.author.username}</p>
 
-      {error
-        ? <p>Oops, something went wrong</p>
-        : <Gallery isLoading={isLoading} photos={album?.photos || []} />}
-    </AlbumDetailPageStyle>
-  );
+			{error
+				? <p>Oops, something went wrong</p>
+				: <Gallery isLoading={isLoading} photos={album?.photos || []} />}
+		</AlbumDetailPageStyle>
+	);
 };
 
 export default AlbumDetailPage;

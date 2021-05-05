@@ -3,8 +3,8 @@
  * It holds all the logic specific to this component.
  */
 export interface UILogic<O, M> {
-  operations: O;
-  models: M;
+	operations: O;
+	models: M;
 }
 
 /**
@@ -13,6 +13,6 @@ export interface UILogic<O, M> {
  * This layer decides which domain specific models and operations the application has access to.
  */
 export interface AppLogic<O, M> {
-  operations: O;
-  models: M;
+	operations: O;
+	models: M;
 }

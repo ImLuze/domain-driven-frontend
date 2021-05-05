@@ -15,59 +15,59 @@ import { UILogic } from '../../models/logic';
  */
 
 export interface AlbumCardProps {
-  album: Pick<Album, 'id' | 'title' | 'url'>;
-  author: Pick<Author, 'id' | 'username'>;
-  operations: {
-    updateAlbum: (albumId: Album['id'], input: UpdateAlbumInput) => void;
-    validateTitle: (title: Album['title']) => ValidationResult;
-  };
+	album: Pick<Album, 'id' | 'title' | 'url'>;
+	author: Pick<Author, 'id' | 'username'>;
+	operations: {
+		updateAlbum: (albumId: Album['id'], input: UpdateAlbumInput) => void;
+		validateTitle: (title: Album['title']) => ValidationResult;
+	};
 }
 
 interface Models {
-  title: AlbumCardProps['album']['title'];
-  url: AlbumCardProps['album']['url'];
-  username: AlbumCardProps['author']['username'];
-  isEditing: boolean;
-  errorMessage?: string;
+	title: AlbumCardProps['album']['title'];
+	url: AlbumCardProps['album']['url'];
+	username: AlbumCardProps['author']['username'];
+	isEditing: boolean;
+	errorMessage?: string;
 }
 
 interface Operations {
-  setIsEditing: (isEditing: Models['isEditing']) => void;
-  setTitle: (title: Models['title']) => void;
+	setIsEditing: (isEditing: Models['isEditing']) => void;
+	setTitle: (title: Models['title']) => void;
 }
 
 const useAlbumCard = (props: AlbumCardProps): UILogic<Operations, Models> => {
-  const { album, author, operations } = props;
-  const { updateAlbum, validateTitle } = operations;
+	const { album, author, operations } = props;
+	const { updateAlbum, validateTitle } = operations;
 
-  const { url } = album;
-  const { username } = author;
+	const { url } = album;
+	const { username } = author;
 
-  const [title, setTitle] = useState<Models['title']>(album.title);
-  const [isEditing, setIsEditing] = useState<Models['isEditing']>(false);
-  const { isValid: isTitleValid, errorMessage } = validateTitle(title);
+	const [title, setTitle] = useState<Models['title']>(album.title);
+	const [isEditing, setIsEditing] = useState<Models['isEditing']>(false);
+	const { isValid: isTitleValid, errorMessage } = validateTitle(title);
 
-  useEffect(() => {
-    const onEnterClick = (event: KeyboardEvent): void => {
-      if (event.key === 'Enter' && isTitleValid) {
-        updateAlbum(album.id, { title });
-        setIsEditing(false);
-      }
-    };
+	useEffect(() => {
+		const onEnterClick = (event: KeyboardEvent): void => {
+			if (event.key === 'Enter' && isTitleValid) {
+				updateAlbum(album.id, { title });
+				setIsEditing(false);
+			}
+		};
 
-    window.addEventListener('keydown', onEnterClick);
+		window.addEventListener('keydown', onEnterClick);
 
-    return (): void => {
-      window.removeEventListener('keydown', onEnterClick);
-    };
-  }, [title]);
+		return (): void => {
+			window.removeEventListener('keydown', onEnterClick);
+		};
+	}, [title]);
 
-  return {
-    operations: { setIsEditing, setTitle },
-    models: {
-      title, url, username, isEditing, errorMessage,
-    },
-  };
+	return {
+		operations: { setIsEditing, setTitle },
+		models: {
+			title, url, username, isEditing, errorMessage,
+		},
+	};
 };
 
 export default useAlbumCard;

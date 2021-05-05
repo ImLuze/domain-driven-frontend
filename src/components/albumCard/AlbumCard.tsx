@@ -20,27 +20,27 @@ import useAlbumCard, { AlbumCardProps } from './useAlbumCard';
  */
 
 const AlbumCard: FunctionComponent<AlbumCardProps> = (props) => {
-  const { models, operations } = useAlbumCard(props);
-  const {
-    title, username, url, isEditing, errorMessage,
-  } = models;
-  const { setTitle, setIsEditing } = operations;
+	const { models, operations } = useAlbumCard(props);
+	const {
+		title, username, url, isEditing, errorMessage,
+	} = models;
+	const { setTitle, setIsEditing } = operations;
 
-  return (
-    <AlbumCardStyle>
-      {errorMessage && <p>{errorMessage}</p>}
-      {isEditing
-        ? <input type="text" value={title} onChange={(e) => setTitle(e.currentTarget.value)} />
-        : (
-          <div className="header">
-            <h2>{title}</h2>
-            <button type="button" onClick={() => setIsEditing(true)}>edit title</button>
-          </div>
-        )}
-      <p>{username}</p>
-      <Link to={url}>Go to album</Link>
-    </AlbumCardStyle>
-  );
+	return (
+		<AlbumCardStyle>
+			{errorMessage && <p>{errorMessage}</p>}
+			{isEditing
+				? <input type="text" value={title} onChange={(e) => setTitle(e.currentTarget.value)} />
+				: (
+					<div className="header">
+						<h2>{title}</h2>
+						<button type="button" onClick={() => setIsEditing(true)}>edit title</button>
+					</div>
+				)}
+			<p>{username}</p>
+			<Link to={url}>Go to album</Link>
+		</AlbumCardStyle>
+	);
 };
 
 export default AlbumCard;

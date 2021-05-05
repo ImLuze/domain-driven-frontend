@@ -18,38 +18,38 @@ import AlbumsSectionStyle from './AlbumsSectionStyle';
  */
 
 interface Operations {
-  updateAlbum: AlbumCardProps['operations']['updateAlbum'];
-  validateTitle: AlbumCardProps['operations']['validateTitle'];
+	updateAlbum: AlbumCardProps['operations']['updateAlbum'];
+	validateTitle: AlbumCardProps['operations']['validateTitle'];
 }
 
 interface Props {
-  albums: Album[];
-  isLoading: boolean;
-  hasError: boolean;
-  operations: Operations;
+	albums: Album[];
+	isLoading: boolean;
+	hasError: boolean;
+	operations: Operations;
 }
 
 const AlbumsSection: FunctionComponent<Props> = ({
-  albums, isLoading, hasError, operations,
+	albums, isLoading, hasError, operations,
 }) => {
-  const renderAlbumCard = (album: Album) => (
-    <AlbumCard
-      key={album.id}
-      album={album}
-      author={album.author}
-      operations={operations}
-    />
-  );
+	const renderAlbumCard = (album: Album) => (
+		<AlbumCard
+			key={album.id}
+			album={album}
+			author={album.author}
+			operations={operations}
+		/>
+	);
 
-  return (
-    <AlbumsSectionStyle>
-      <Loader isLoading={isLoading}>
-        {hasError
-          ? <p>Oops something went wrong!</p>
-          : albums.map(renderAlbumCard)}
-      </Loader>
-    </AlbumsSectionStyle>
-  );
+	return (
+		<AlbumsSectionStyle>
+			<Loader isLoading={isLoading}>
+				{hasError
+					? <p>Oops something went wrong!</p>
+					: albums.map(renderAlbumCard)}
+			</Loader>
+		</AlbumsSectionStyle>
+	);
 };
 
 export default AlbumsSection;

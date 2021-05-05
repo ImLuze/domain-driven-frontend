@@ -1,23 +1,41 @@
 {
-    "extends": [
-        "airbnb-typescript"
-    ],
-    "parserOptions": {
-        "project": "tsconfig.json"
-    },
-    "rules": {
-        "react/react-in-jsx-scope": "off",
-        "react/prop-types": "off",
-        "import/no-extraneous-dependencies": [
-            "error",
-            {
-                "devDependencies": [
-                    "**/*.test.ts",
-                    "**/*.test.tsx",
-                    "./src/setupTests.ts",
-                    "./src/mocks/*"
-                ]
-            }
-        ]
-    }
+	"extends": [
+		"airbnb-typescript"
+	],
+	"parserOptions": {
+		"project": "tsconfig.json"
+	},
+	"rules": {
+		"no-tabs": [
+			"error",
+			{
+				"allowIndentationTabs": true
+			}
+		],
+		"@typescript-eslint/indent": [
+			"error",
+			"tab"
+		],
+		"react/jsx-indent": [
+			"error",
+			"tab"
+		],
+		"react/jsx-indent-props": [
+			"error",
+			"tab"
+		],
+		"react/react-in-jsx-scope": "off",
+		"react/prop-types": "off",
+		"import/no-extraneous-dependencies": [
+			"error",
+			{
+				"devDependencies": [
+					"**/*.test.ts",
+					"**/*.test.tsx",
+					"./src/setupTests.ts",
+					"./src/mocks/*"
+				]
+			}
+		]
+	}
 }

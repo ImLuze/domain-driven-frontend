@@ -12,15 +12,15 @@ import LoaderStyle from './LoaderStyle';
  */
 
 interface Props {
-  isLoading: boolean;
+	isLoading: boolean;
 }
 
 const Loader: FunctionComponent<Props> = ({ isLoading, children }) => (
-  <LoaderStyle>
-    {isLoading
-      ? <p>Loading...</p>
-      : children}
-  </LoaderStyle>
+	<LoaderStyle>
+		{isLoading
+			? <p>Loading...</p>
+			: children}
+	</LoaderStyle>
 );
 
 export default Loader;

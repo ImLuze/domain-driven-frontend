@@ -15,50 +15,50 @@ import useValidator from './useValidator';
  */
 
 const RULES = [
-  { rule: (input: string) => input !== 'invalid', errorMessage: 'input is invalid' },
-  { rule: (input: string) => input !== 'also invalid', errorMessage: 'input is also invalid' },
-  { rule: (input: string) => input !== 'double errors', errorMessage: 'error message 1' },
-  { rule: (input: string) => input !== 'double errors', errorMessage: 'error message 2' },
+	{ rule: (input: string) => input !== 'invalid', errorMessage: 'input is invalid' },
+	{ rule: (input: string) => input !== 'also invalid', errorMessage: 'input is also invalid' },
+	{ rule: (input: string) => input !== 'double errors', errorMessage: 'error message 1' },
+	{ rule: (input: string) => input !== 'double errors', errorMessage: 'error message 2' },
 ];
 
 describe('useValidator', () => {
-  describe('returns a method', () => {
-    describe('validate', () => {
-      it('validates an input based on a set of rules', () => {
-        const { result: { current: validate } } = renderHook(() => useValidator(RULES));
+	describe('returns a method', () => {
+		describe('validate', () => {
+			it('validates an input based on a set of rules', () => {
+				const { result: { current: validate } } = renderHook(() => useValidator(RULES));
 
-        expect(validate('invalid')).toStrictEqual(expect.objectContaining({ isValid: false }));
-        expect(validate('also invalid')).toStrictEqual(expect.objectContaining({ isValid: false }));
-        expect(validate('valid')).toStrictEqual(expect.objectContaining({ isValid: true }));
-      });
+				expect(validate('invalid')).toStrictEqual(expect.objectContaining({ isValid: false }));
+				expect(validate('also invalid')).toStrictEqual(expect.objectContaining({ isValid: false }));
+				expect(validate('valid')).toStrictEqual(expect.objectContaining({ isValid: true }));
+			});
 
-      describe('returns a set of models', () => {
-        it('returns isValid', () => {
-          const { result: { current: validate } } = renderHook(() => useValidator(RULES));
+			describe('returns a set of models', () => {
+				it('returns isValid', () => {
+					const { result: { current: validate } } = renderHook(() => useValidator(RULES));
 
-          expect(validate('invalid')).toStrictEqual(expect.objectContaining({ isValid: false }));
-          expect(validate('also invalid')).toStrictEqual(expect.objectContaining({ isValid: false }));
-          expect(validate('valid')).toStrictEqual(expect.objectContaining({ isValid: true }));
-        });
+					expect(validate('invalid')).toStrictEqual(expect.objectContaining({ isValid: false }));
+					expect(validate('also invalid')).toStrictEqual(expect.objectContaining({ isValid: false }));
+					expect(validate('valid')).toStrictEqual(expect.objectContaining({ isValid: true }));
+				});
 
-        it('returns all errorMessages as an array', () => {
-          const { result: { current: validate } } = renderHook(() => useValidator(RULES));
+				it('returns all errorMessages as an array', () => {
+					const { result: { current: validate } } = renderHook(() => useValidator(RULES));
 
-          expect(validate('invalid')).toStrictEqual(expect.objectContaining({ errorMessages: ['input is invalid'] }));
-          expect(validate('also invalid')).toStrictEqual(expect.objectContaining({ errorMessages: ['input is also invalid'] }));
-          expect(validate('double errors')).toStrictEqual(expect.objectContaining({ errorMessages: ['error message 1', 'error message 2'] }));
-          expect(validate('valid')).toStrictEqual(expect.objectContaining({ errorMessages: [] }));
-        });
+					expect(validate('invalid')).toStrictEqual(expect.objectContaining({ errorMessages: ['input is invalid'] }));
+					expect(validate('also invalid')).toStrictEqual(expect.objectContaining({ errorMessages: ['input is also invalid'] }));
+					expect(validate('double errors')).toStrictEqual(expect.objectContaining({ errorMessages: ['error message 1', 'error message 2'] }));
+					expect(validate('valid')).toStrictEqual(expect.objectContaining({ errorMessages: [] }));
+				});
 
-        it('returns the first errorMessage as a string', () => {
-          const { result: { current: validate } } = renderHook(() => useValidator(RULES));
+				it('returns the first errorMessage as a string', () => {
+					const { result: { current: validate } } = renderHook(() => useValidator(RULES));
 
-          expect(validate('invalid')).toStrictEqual(expect.objectContaining({ errorMessage: 'input is invalid' }));
-          expect(validate('also invalid')).toStrictEqual(expect.objectContaining({ errorMessage: 'input is also invalid' }));
-          expect(validate('double errors')).toStrictEqual(expect.objectContaining({ errorMessage: 'error message 1' }));
-          expect(validate('valid')).toStrictEqual(expect.objectContaining({ errorMessage: undefined }));
-        });
-      });
-    });
-  });
+					expect(validate('invalid')).toStrictEqual(expect.objectContaining({ errorMessage: 'input is invalid' }));
+					expect(validate('also invalid')).toStrictEqual(expect.objectContaining({ errorMessage: 'input is also invalid' }));
+					expect(validate('double errors')).toStrictEqual(expect.objectContaining({ errorMessage: 'error message 1' }));
+					expect(validate('valid')).toStrictEqual(expect.objectContaining({ errorMessage: undefined }));
+				});
+			});
+		});
+	});
 });

@@ -14,27 +14,27 @@ import { useGetAlbums } from './models/getAlbums';
 */
 
 const AlbumsPage: PageComponent = () => {
-  const { operations, models } = useAlbums(useGetAlbums());
-  const { updateAlbum, validateTitle } = operations;
-  const { albums, isLoading, error } = models;
+	const { operations, models } = useAlbums(useGetAlbums());
+	const { updateAlbum, validateTitle } = operations;
+	const { albums, isLoading, error } = models;
 
-  return (
-    <AlbumsPageStyle>
-      <header className="header">
-        <h1>Albums Page</h1>
-        <Link to="/albums/add">Add new album</Link>
-      </header>
-      <AlbumsSection
-        albums={albums}
-        isLoading={isLoading}
-        hasError={!!error}
-        operations={{
-          updateAlbum,
-          validateTitle,
-        }}
-      />
-    </AlbumsPageStyle>
-  );
+	return (
+		<AlbumsPageStyle>
+			<header className="header">
+				<h1>Albums Page</h1>
+				<Link to="/albums/add">Add new album</Link>
+			</header>
+			<AlbumsSection
+				albums={albums}
+				isLoading={isLoading}
+				hasError={!!error}
+				operations={{
+					updateAlbum,
+					validateTitle,
+				}}
+			/>
+		</AlbumsPageStyle>
+	);
 };
 
 export default AlbumsPage;

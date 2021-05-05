@@ -14,90 +14,90 @@ import { UILogic } from '../../models/logic';
  */
 
 export interface AlbumFormProps {
-  operations: {
-    onSubmit: (input: CreateAlbumInput) => void;
-    validateTitle: (title: CreateAlbumInput['title']) => ValidationResult;
-    validatePhotos: (photos: CreateAlbumInput['photos']) => ValidationResult;
-  }
+	operations: {
+		onSubmit: (input: CreateAlbumInput) => void;
+		validateTitle: (title: CreateAlbumInput['title']) => ValidationResult;
+		validatePhotos: (photos: CreateAlbumInput['photos']) => ValidationResult;
+	}
 }
 
 interface Models {
-  title: CreateAlbumInput['title'];
-  photos: CreateAlbumInput['photos'];
-  errorMessage: {
-    title?: string;
-    photos?: string;
-  }
+	title: CreateAlbumInput['title'];
+	photos: CreateAlbumInput['photos'];
+	errorMessage: {
+		title?: string;
+		photos?: string;
+	}
 }
 
 interface Operations {
-  setTitle: (title: Models['title']) => void;
-  addPhoto: (file: File) => void;
-  removePhotoAtIndex: (index: number) => void;
-  saveAlbum: () => void;
+	setTitle: (title: Models['title']) => void;
+	addPhoto: (file: File) => void;
+	removePhotoAtIndex: (index: number) => void;
+	saveAlbum: () => void;
 }
 
 const useAlbumForm = (props: AlbumFormProps): UILogic<Operations, Models> => {
-  const { operations } = props;
-  const {
-    onSubmit, validateTitle, validatePhotos,
-  } = operations;
+	const { operations } = props;
+	const {
+		onSubmit, validateTitle, validatePhotos,
+	} = operations;
 
-  const [title, setTitle] = useState<Models['title']>('');
-  const [photos, setPhotos] = useState<Models['photos']>([]);
-  const [titleErrorMessage, setTitleErrorMessage] = useState<string | undefined>();
-  const [photosErrorMessage, setPhotosErrorMessage] = useState<string | undefined>();
-  const didMount = useRef(false);
+	const [title, setTitle] = useState<Models['title']>('');
+	const [photos, setPhotos] = useState<Models['photos']>([]);
+	const [titleErrorMessage, setTitleErrorMessage] = useState<string | undefined>();
+	const [photosErrorMessage, setPhotosErrorMessage] = useState<string | undefined>();
+	const didMount = useRef(false);
 
-  const fileToPhoto = (file: File): Models['photos'][number] => ({
-    alt: file.name,
-    url: '/photo/0',
-  });
+	const fileToPhoto = (file: File): Models['photos'][number] => ({
+		alt: file.name,
+		url: '/photo/0',
+	});
 
-  const addPhoto: Operations['addPhoto'] = (file) => {
-    setPhotos([...photos, fileToPhoto(file)]);
-  };
+	const addPhoto: Operations['addPhoto'] = (file) => {
+		setPhotos([...photos, fileToPhoto(file)]);
+	};
 
-  const removePhotoAtIndex: Operations['removePhotoAtIndex'] = (index) => {
-    setPhotos(photos.filter((_, i) => i !== index));
-  };
+	const removePhotoAtIndex: Operations['removePhotoAtIndex'] = (index) => {
+		setPhotos(photos.filter((_, i) => i !== index));
+	};
 
-  const saveAlbum: Operations['saveAlbum'] = () => {
-    const { isValid: isTitleValid, errorMessage: newTitleErrorMessage } = validateTitle(title);
-    const { isValid: isPhotosValid, errorMessage: newPhotosErrorMessage } = validatePhotos(photos);
+	const saveAlbum: Operations['saveAlbum'] = () => {
+		const { isValid: isTitleValid, errorMessage: newTitleErrorMessage } = validateTitle(title);
+		const { isValid: isPhotosValid, errorMessage: newPhotosErrorMessage } = validatePhotos(photos);
 
-    setTitleErrorMessage(newTitleErrorMessage);
-    setPhotosErrorMessage(newPhotosErrorMessage);
+		setTitleErrorMessage(newTitleErrorMessage);
+		setPhotosErrorMessage(newPhotosErrorMessage);
 
-    if (isTitleValid && isPhotosValid) {
-      onSubmit({ title, photos });
-    }
-  };
+		if (isTitleValid && isPhotosValid) {
+			onSubmit({ title, photos });
+		}
+	};
 
-  useEffect(() => {
-    if (didMount.current) {
-      setTitleErrorMessage(validateTitle(title).errorMessage);
-    } else {
-      didMount.current = true;
-    }
-  }, [title]);
+	useEffect(() => {
+		if (didMount.current) {
+			setTitleErrorMessage(validateTitle(title).errorMessage);
+		} else {
+			didMount.current = true;
+		}
+	}, [title]);
 
-  return {
-    models: {
-      title,
-      photos,
-      errorMessage: {
-        title: titleErrorMessage,
-        photos: photosErrorMessage,
-      },
-    },
-    operations: {
-      setTitle,
-      addPhoto,
-      removePhotoAtIndex,
-      saveAlbum,
-    },
-  };
+	return {
+		models: {
+			title,
+			photos,
+			errorMessage: {
+				title: titleErrorMessage,
+				photos: photosErrorMessage,
+			},
+		},
+		operations: {
+			setTitle,
+			addPhoto,
+			removePhotoAtIndex,
+			saveAlbum,
+		},
+	};
 };
 
 export default useAlbumForm;
