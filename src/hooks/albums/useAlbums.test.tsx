@@ -4,12 +4,12 @@ import { ApolloError, ApolloProvider } from '@apollo/client';
 import { act } from 'react-dom/test-utils';
 import client from '../../client';
 import useAlbums, { AlbumsAPI } from './useAlbums';
-import { MOCK_ALBUMS } from '../../mocks/handlers';
 import { Album } from './models/album';
 import * as useCreateAlbum from './models/createAlbum';
 import * as useDeleteAlbum from './models/deleteAlbum';
 import * as useUpdateAlbum from './models/updateAlbum';
 import { CreateAlbumInput, UpdateAlbumInput } from './models/albumInput';
+import MOCK_ALBUMS from '../../mocks/data/albums';
 
 /**
  * This is a Unit Test for an Interaction layer hook.
