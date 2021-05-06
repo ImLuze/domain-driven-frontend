@@ -1,4 +1,7 @@
 # Presenter
+
+![Presenter image](../assets/presenter.jpg)
+
 The Presenter of the application consists of multiple Container Components, more fittingly named: Page Components.
 This layer connects the Interaction layer and the View layer together. While Interaction layer domains or View layer components are usually reusable throughout the application, or even multiple applications. The individual Page Components are usually not.
 

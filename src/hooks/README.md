@@ -1,4 +1,7 @@
 # Interaction layer
+
+![Model image](../assets/model.jpg)
+
 The Interaction layer is the decision making layer. This layer determines what we can or can't do with our domain throughout the application. It enforces consistency by centralizing Domain Interaction Logic. Every hook in this directory is meant to be reuseable and handles only one domain or concern. (validation, todos, albums). You should see every hook as an expert in its field.
 
 *(Example: When we want to execute `createTodo` we might want to do some frontend validation before we execute the API request. We want to make sure that every instance of `createTodo` enforces the same rules.)*

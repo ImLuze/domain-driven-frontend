@@ -10,7 +10,7 @@ This architecture is based on the [Onion Layer Architectures](https://dev.to/bar
 
 To separate our concerns into more tangible concepts we separate our codebase into layers.
 
-[Architecture image](./src/assets/architecture.jpg)
+![Architecture image](./src/assets/architecture.jpg)
 
 Practically, there are 3 notable layers:
 1. The View Layer
@@ -22,7 +22,7 @@ As you can see on the image above, there are actually a couple more layers. But 
 ### The View Layer
 **Render the UI and create user events**
 
-[View image](./src/assets/view.jpg)
+![View image](./src/assets/view.jpg)
 
 The View Layer consists of multiple, completely independent, reusable Presentation Components.
 Their purpose is to:
@@ -62,7 +62,7 @@ Since UI logic is behavior, *this* is actually what we want to test against in o
 ### The Presenter
 **The glue layer**
 
-[Presenter image](./src/assets/presenter.jpg)
+![Presenter image](./src/assets/presenter.jpg)
 
 Traditionally, the responsibilities of a container component were to:
 1. Consume user events & pass them to the model.

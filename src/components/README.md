@@ -1,4 +1,8 @@
 # View layer (React Component)
+
+![View image](../assets/view.jpg)
+
+
 The View layer is the actual UI part of the frontend application. This layer presents data to to the user and allows the user to trigger certain user events.
 The `components` directory consists only of fully reusable React Components.
 
