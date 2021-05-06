@@ -1,22 +1,25 @@
-# Page Component
+# Presenter
+The Presenter of the application consists of multiple Container Components, more fittingly named: Page Components.
+This layer connects the Interaction layer and the View layer together. While Interaction layer domains or View layer components are usually reusable throughout the application, or even multiple applications. The individual Page Components are usually not.
 
-These are the page components. A page component (also known as container component) serves as the **controller** of the application. It serves as a glue layer between the **interaction** layer and the **presentation** layer (The view).
-
-These components are unique per application. While presentational components and interaction layer logic are easily reused throughout multiple projects. The glue layer between is usually not.
+*(Note: A Page Component holds no logic of its own.)*
 
 ---
 
 ## What does it do?
-1. It links multiple independent features together. (see: [page example](https://github.com/ImLuze/frontend-architecture-demo/blob/main/src/pages/AlbumsPage.tsx))
-2. Places every presentational component on it's correct position on the page. (see [page style example](https://github.com/ImLuze/frontend-architecture-demo/blob/main/src/pages/AlbumsPageStyle.ts))
+1. Provide data from the Interaction layer to the View layer.
+2. Receive user events from the View layer and delegate them back to the Interaction layer.
 
-## Integration testing
-As mentioned above, this components links multiple features together. Because of this, it is the ideal candidate to run integration tests from. (see [integration test example](https://github.com/ImLuze/frontend-architecture-demo/blob/main/src/pages/AlbumsPage.test.tsx))
-
-## Files in this folder:
-* `<name>Page.test.tsx`: Lists all the features which are enabled on this page and runs integration tests for them.
-* `<name>PageStyle.ts`: Positions all the components/sections and adds page-specific styling.
-* `<name>Page.tsx`: Main page component which links the interaction layer and the view layer together.
-* `*.graphql`: All queries and mutations necessary to enable every feature on this page.
+## Files in a Page Component directory:
+* `<name>Page.tsx`: Main component which links the Interaction layer and the View layer together.
+* `<name>PageStyle.ts`: Positions all the View layer components on the page and adds page-specific styling.
+* `<name>Page.test.tsx`: Lists all the features which are enabled by this page and runs integration tests for them.
+* `*.graphql`: All queries necessary to enable every feature on this page.
 * `/models`: All page-specific TypeScript declaration files.
 * `/components`: All page-specific React Components which are not meant to be reused elsewhere.
+
+GraphQL queries will only be used by their respective Page Components. This makes it useful to place the actual GraphQL files as close to their Page Component as possible. Doing this makes it easier to reason about why certain fields are requested and allows us to generate page-specific types as close as possible to the actual page.
+
+We generally won't add any models to the page models directory ourself. These are merely types generated from their GraphQL queries.
+
+*(Tip: Ever forget what a Page Component should do? Hover over the `PageComponent` type in your code.)*

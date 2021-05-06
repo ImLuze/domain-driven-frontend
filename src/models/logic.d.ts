@@ -1,6 +1,16 @@
 /**
- * The UI Logic layer determines which operations and modals the Presentation layer has access to.
- * It holds all the logic specific to this component.
+ * @summary
+ * Logic specific to this component.
+ *
+ * @description
+ * The UI Logic determines which operations and models the component has access to and what
+ * happens when certain operations or user events are triggered. Separating the logic from our
+ * component allows us to write easier to understand unit tests and allows us to reuse UI Logic
+ * for similar components with a different layout or styling.
+ *
+ * @example
+ * useTodoComponent => { isCompleted, title, body, dueDate, completeTodo, removeTodo }
+ * useChessPiece => { type, color, currentPosition, pickPieceUp }
  */
 export interface UILogic<O, M> {
 	operations: O;
@@ -8,11 +18,23 @@ export interface UILogic<O, M> {
 }
 
 /**
- * The Interaction layer is the decision making layer.
- * It maps API data to a set of application-specific interfaces.
- * This layer decides which domain specific models and operations the application has access to.
+ * @summary
+ * Application use cases and rules.
+ *
+ * @description
+ * The Interaction layer is the decision making layer. This layer determines what we can or can't
+ * do with our domain throughout the application. It enforces consistency by centralizing Behavior
+ * Logic.
+ *
+ * Concerns:
+ * 1. Map API DTOs (Data Transfer Objects) to useable models.
+ * 2. Enforce rules and consistent behavior throughout the application.
+ *
+ * @example
+ * useTodos => { createTodo, completeTodo, changeDueDate, removeTodo, todos, completedTodos }
+ * useChess => { pickPieceUp, movePiece, validMoves, pieces }
  */
-export interface AppLogic<O, M> {
+export interface InteractionLogic<O, M> {
 	operations: O;
 	models: M;
 }

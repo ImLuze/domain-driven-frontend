@@ -1,5 +1,5 @@
 import { ApolloError } from '@apollo/client';
-import { AppLogic } from '../../models/logic';
+import { InteractionLogic } from '../../models/logic';
 import { Maybe, Album as AlbumDTO, Query } from '../../models/schema';
 import useRoutes from '../routes/useRoutes';
 import useValidator, { Validate } from '../validator/useValidator';
@@ -39,7 +39,7 @@ interface Models {
 	error?: ApolloError;
 }
 
-const useAlbums = (albumsAPI?: AlbumsAPI): AppLogic<Operations, Models> => {
+const useAlbums = (albumsAPI?: AlbumsAPI): InteractionLogic<Operations, Models> => {
 	const { operations: { goToAlbumDetail }, models: routes } = useRoutes();
 	const [createAlbumMutation] = useCreateAlbum();
 	const [updateAlbumMutation] = useUpdateAlbum();

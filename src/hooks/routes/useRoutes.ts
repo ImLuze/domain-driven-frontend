@@ -1,5 +1,5 @@
 import { useHistory } from 'react-router';
-import { AppLogic } from '../../models/logic';
+import { InteractionLogic } from '../../models/logic';
 import { Album } from '../albums/models/album';
 import { Routes } from './models/routes';
 
@@ -9,7 +9,7 @@ interface Operations {
 
 type Models = Routes;
 
-const useRoutes = (): AppLogic<Operations, Models> => {
+const useRoutes = (): InteractionLogic<Operations, Models> => {
 	const history = useHistory();
 
 	const routes: Models = {
