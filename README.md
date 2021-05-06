@@ -99,7 +99,7 @@ Because of its nature, Page Components are the ideal candidate for integration t
 ### The Interaction Layer
 **App behavior**
 
-[Model image](./src/assets/model.jpg)
+![Model image](./src/assets/model.jpg)
 
 The first layer of the model, which is what gets called from the container component, is the interaction layer.
 
