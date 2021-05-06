@@ -2,10 +2,9 @@ import { ValidationResult } from './models/ValidationResult';
 import { ValidationRule } from './models/ValidationRule';
 
 /**
- * This hook is the decision making layer (Interaction layer).
- * This is reusable. It has no dependencies outside itself.
- * It can easily be replaced with a hook with a similar interface.
- * This hook decides which domain specific models and operations the application has access to.
+ * As indicated by the return type, this hook is not really an Interaction layer hook, it's merely a
+ * utility to help us achieve something. Wether it should be placed in a separate directory is up
+ * for debate.
  */
 
 export type Validate<I> = (input: I) => ValidationResult;

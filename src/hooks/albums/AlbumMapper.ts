@@ -10,6 +10,12 @@ import {
 import { CreateAlbumInput, UpdateAlbumInput } from './models/albumInput';
 import { Routes } from '../routes/models/routes';
 
+/**
+ * This class maps all our DTOs (Data Transfer Object) to more useable models or back.
+ * Converting these prevents our code from being cluttered with null checks or allows us to
+ * add frontend specific object keys.
+ */
+
 class AlbumMapper {
 	private routes: Routes;
 

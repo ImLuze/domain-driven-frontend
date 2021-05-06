@@ -156,7 +156,14 @@ Meta state refers to state *about* state. The best example of this is the `isLoa
 The state our application is in, which is kept in the URL of the browser.
 
 ## Testing
-Automated tests allow us to be more confidence in our development, they are most well known for their ability to prevent future developers to break any of the existing code. But they accomplish so much more than that. Besides helping us to not break things. They also help us with debugging tasks that might otherwise be cumbersome to test constantly in the actual UI. They also provide us an easy and straightforward way to document our code. A test file is basically a giant list of everything we expect our code to do. While at the same time verifying that it actually does it. They are in short a quality reassurance, live documentation and debugging tool.
+Test-Driven-Development has only 1 rule:
+
+Don't write any code if it's not to fix a failing test. As soon as your test is successful. Drop your pen and either write a new test or update your previous one.
+
+Automated tests allow us to be more confident in our development, they are most well known for their ability to prevent future developers to break any of the existing code. But they accomplish so much more than that. Besides helping us to not break things. They also help us with debugging tasks that might otherwise be cumbersome to test constantly in the actual UI. They also provide us an easy and straightforward way to document our code. A test file is basically a giant list of everything we expect our code to do. While at the same time verifying that it actually does it. It can serve as a list of changes for a changelog. Or as a checklist for whoever manually tests the project before release. They are in short a quality reassurance, live documentation and debugging tool.
+
+Don't spend too long on a test. If you're stuck, put the test in todo and move on.
+As a developer coming across a todo test. Make sure to manually test if the behavior works as expected. If you know how to fix the test, go ahead and fix it and let the original developer know how you did it.
 
 If you are new to writing tests, read these:
 

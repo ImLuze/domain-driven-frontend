@@ -6,8 +6,14 @@ import { PageComponent } from '../../models/PageComponent';
 import AlbumDetailPageStyle from './AlbumDetailPageStyle';
 import { useGetAlbumById } from './models/getAlbumById';
 
+/**
+ * The Page Component has no logic of its own. It simply calls the necessary interaction
+ * layer hooks and hooks them up to the View layer.
+ */
+
 const AlbumDetailPage: PageComponent = ({ routes }) => {
 	const { id } = useParams<{ id: string }>();
+	// Let the useAlbums interaction layer handle our API data.
 	const { models } = useAlbums(useGetAlbumById({ variables: { id } }));
 	const { album, isLoading, error } = models;
 

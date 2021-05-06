@@ -25,4 +25,15 @@ GraphQL queries will only be used by their respective Page Components. This make
 
 We generally won't add any models to the page models directory ourself. These are merely types generated from their GraphQL queries.
 
+## General workflow to write a Page Component:
+1. Create an empty hook component in `<name>Page.tsx` file with the `PageComponent` type and add an empty component in a `<name>PageStyle.ts` file which extends on the `Layout` component from `style/Layout.ts`.
+2. Add all the necessary GraphQL query files and run the `generate:graphql` script.
+3. Create a `<name>Page.test.tsx` file, list all the features on your page and write failing integration tests for each.
+	1. Create a describe block for all possible states your page might get in. (loading, error, successful etc...).
+	2. Add all features for each state. (shows that the page is loading, shows all completed todos, allows the user to edit the title etc...).
+	3. Some features might have some states of their own, add new describe blocks for those. (if the new title is valid, if the new title is invalid etc...)
+	4. Continue nesting states and features until you have nothing more to add.
+4. In your page, call all the necessary Interaction layer hooks and hook them up to the View layer components.
+5. Position all the View layer components correctly in your `<name>PageStyle.ts` file.
+
 *(Tip: Ever forget what a Page Component should do? Hover over the `PageComponent` type in your code.)*

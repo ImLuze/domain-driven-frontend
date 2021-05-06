@@ -4,7 +4,13 @@ import useAlbums from '../../hooks/albums/useAlbums';
 import { PageComponent } from '../../models/PageComponent';
 import AddAlbumPageStyle from './AddAlbumPageStyle';
 
+/**
+ * The Page Component has no logic of its own. It simply calls the necessary interaction
+ * layer hooks and hooks them up to the View layer.
+ */
+
 const AddAlbumPage: PageComponent = ({ routes }) => {
+	// This page doesn't need any GraphQL queries to function.
 	const { operations } = useAlbums();
 	const { createAlbum, validatePhotos, validateTitle } = operations;
 
@@ -15,6 +21,7 @@ const AddAlbumPage: PageComponent = ({ routes }) => {
 				<Link to={routes.home}>Go back</Link>
 			</header>
 			<AlbumForm
+				// Delegate operations back to our Interaction layer.
 				operations={{
 					onSubmit: createAlbum,
 					validatePhotos,

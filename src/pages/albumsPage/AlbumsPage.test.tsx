@@ -2,10 +2,10 @@ import { ApolloProvider } from '@apollo/client';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { RequestHandler, graphql } from 'msw';
+import { FunctionComponent } from 'react';
 import { MemoryRouter } from 'react-router';
 import client from '../../client';
 import server from '../../mocks/server';
-import { PageComponent } from '../../models/PageComponent';
 import Routes from '../../Routes';
 
 /**
@@ -14,6 +14,8 @@ import Routes from '../../Routes';
  *
  * This is generally the first file you create when you add a new page, or the first one you edit
  * when you fix a bug or add a new feature.
+ *
+ * When you're running low on time, skip the unit tests and focus on these Integration tests.
 */
 
 const mockErrorResponse: RequestHandler = graphql.query('getAlbums', (req, res, ctx) => res(
@@ -21,7 +23,7 @@ const mockErrorResponse: RequestHandler = graphql.query('getAlbums', (req, res, 
 	ctx.errors([{ message: 'Not found' }]),
 ));
 
-const MockedAlbumsPage: PageComponent = () => (
+const MockedAlbumsPage: FunctionComponent = () => (
 	<ApolloProvider client={client}>
 		<MemoryRouter initialEntries={['/']}>
 			<Routes />

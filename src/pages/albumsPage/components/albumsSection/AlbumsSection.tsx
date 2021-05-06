@@ -11,10 +11,13 @@ import AlbumsSectionStyle from './AlbumsSectionStyle';
  * 2. Split up code to maintain readability/maintainability.
  *
  * This component exists for reason 2. It's a component that is only used on the AlbumsPage.
- * It's located in a `<page>/components` folder to indicate that.
- * It could in theory easily be added the main Page Component,
- * but sometimes it's more comprehensable to separate sections
+ * It's located in a `<page>/components` folder to indicate that. It could in theory easily
+ * be added to the main Page Component, but sometimes it's more comprehensible to separate sections
  * All components in the main `/components` folder are reused on multiple pages.
+ *
+ * (Notice how the `AlbumsSectionStyle` component is actually a section and not a div. Having
+ * semantically correct sections is a good indication that you can split them up in separate
+ * components.)
  */
 
 interface Operations {

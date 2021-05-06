@@ -11,11 +11,8 @@ import { useDeleteAlbum } from './models/deleteAlbum';
 import { useUpdateAlbum } from './models/updateAlbum';
 
 /**
- * This hook is the decision making layer (Interaction layer).
- * It maps API data to a set of application-specific interfaces.
- * This hook decides which domain specific models and operations the application has access to.
- *
- * This hook can be combined with `useAlbumsOperations` if both are small or easy to manage.
+ * This hook enforces a consistent behavior throughout our application. This particular hook
+ * can handle data from the `albums` and the `album` query.
  */
 
 export interface AlbumsAPI {

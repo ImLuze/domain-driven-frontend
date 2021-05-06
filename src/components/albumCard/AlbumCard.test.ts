@@ -2,6 +2,19 @@ import { act, renderHook } from '@testing-library/react-hooks';
 import userEvent from '@testing-library/user-event';
 import useAlbumCard, { AlbumCardProps } from './useAlbumCard';
 
+/**
+ * This is a Unit Test for the UI Logic. Notice how it does not test the UI, only the logic. The UI
+ * itself is an implementation detail, a means to an end. Testing the UI would not only complicate
+ * our unit tests, it would not provide much added value.
+ *
+ * Note: The unit tests here are very excessive. Don't unit test everything. Unit Tests serve as
+ * a way to document code. You should only write a Unit Test for a piece of code if:
+ * 1. Your component solves a complex issue that needs to be documented or you notice from PR
+ *    reviews that someone doesn't understand what you are trying to do.
+ * 2. The issue you are solving is not being covered by an integration test.
+ * 3. You need help debugging something that is cumbersome to test in a real life situation.
+ */
+
 const props: AlbumCardProps = {
 	album: {
 		id: '0',

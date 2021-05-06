@@ -18,8 +18,18 @@ The View layer is broken up in 2 separate sub-layers:
 
 ## Files in a View layer (React Component) directory:
 * `<name>.tsx`: The layout of the component.
-* `<name>Style.tsx`: The styling of the component.
+* `<name>Style.ts`: The styling of the component.
 * `use<name>.ts`: The UI logic of the component.
 * `<name>.test.ts`: Lists all the features of the UI logic and runs unit tests for them.
+
+## General workflow to write a Presentation component:
+1. Check if you need / have a failing integration test.
+2. Create an empty component in a `<name>.tsx` and a `<name>Style.ts` file and an empty hook in `use<name>.ts` with the `UILogic` return type.
+3. Add a `<name>.test.ts` file if:
+	1. Your component solves a complex issue that needs to be documented or you notice from PR reviews that someone doesn't understand what you are trying to do.
+	2. The issue you are solving is not being covered by an integration test.
+	3. You need help debugging something that is cumbersome to test in a real life situation.
+4. In your `use<name>.ts` file, add types for the `props`, `models` and `operations` which your component will use and write your UI logic.
+5. Call your `use<name>` hook in your main component and hook everything up.
 
 *(Tip: Ever forget what the UI logic should do? Hover over the `UILogic` type in your code.)*

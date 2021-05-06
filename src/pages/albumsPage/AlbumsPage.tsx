@@ -6,14 +6,12 @@ import AlbumsSection from './components/albumsSection/AlbumsSection';
 import { useGetAlbums } from './models/getAlbums';
 
 /**
- * This is our Page Component (also known as Container Component).
- * It glues our `Interaction` layer (useAlbums hook) to our `View` layer (React Components).
- * It delegates user events triggered by the React Components back to the interaction layer.
- *
- * (Note: These Page Components generally don't have any logic of their own.)
-*/
+ * The Page Component has no logic of its own. It simply calls the necessary interaction
+ * layer hooks and hooks them up to the View layer.
+ */
 
 const AlbumsPage: PageComponent = ({ routes }) => {
+	// Let the useAlbums interaction layer handle our API data.
 	const { operations, models } = useAlbums(useGetAlbums());
 	const { updateAlbum, validateTitle } = operations;
 	const { albums, isLoading, error } = models;
@@ -25,9 +23,11 @@ const AlbumsPage: PageComponent = ({ routes }) => {
 				<Link to={routes.albums.add}>Add new album</Link>
 			</header>
 			<AlbumsSection
+				// Pass the necessary data to our View layer.
 				albums={albums}
 				isLoading={isLoading}
 				hasError={!!error}
+				// Delegate operations back to our Interaction layer.
 				operations={{
 					updateAlbum,
 					validateTitle,

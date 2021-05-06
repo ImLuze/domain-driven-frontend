@@ -1,10 +1,10 @@
 import { ApolloProvider } from '@apollo/client';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { FunctionComponent } from 'react';
 import { MemoryRouter } from 'react-router';
 import client from '../../client';
 import * as useCreateAlbum from '../../hooks/albums/models/createAlbum';
-import { PageComponent } from '../../models/PageComponent';
 import Routes from '../../Routes';
 
 /**
@@ -13,9 +13,11 @@ import Routes from '../../Routes';
  *
  * This is generally the first file you create when you add a new page, or the first one you edit
  * when you fix a bug or add a new feature.
+ *
+ * When you're running low on time, skip the unit tests and focus on these Integration tests.
 */
 
-const MockedAddAlbumPage: PageComponent = () => (
+const MockedAddAlbumPage: FunctionComponent = () => (
 	<ApolloProvider client={client}>
 		<MemoryRouter initialEntries={['/albums/add']}>
 			<Routes />

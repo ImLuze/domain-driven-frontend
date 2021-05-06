@@ -4,19 +4,11 @@ import AlbumFormStyle from './AlbumFormStyle';
 import useAlbumForm, { AlbumFormProps } from './useAlbumForm';
 
 /**
- * A Component is split up in 3 variables, wether these 3 variables
- * live in separate files or not is up to the developer.
- *
- * 1. The Layout (this file):
- *    This layer holds no logic, it simply determines the layout of the component and
- *    presents data and allows user events to be triggered.
- *
- * 2. The Styling (<name>Style.ts):
- *    Determines how a component looks.
- *
- * 3. The UI Logic (use<name>.ts):
- *    Determines which specific models and operations this component has access to and
- *    what happens if an operation gets called.
+ * This is the Layout of the component. It calls its UI Logic hook and hooks up the logic and data
+ * to the actual component. The components in this `components` directory are supposed to fully
+ * reusable and are usually used on multiple pages. If you prefer, you could also merge the style
+ * file into this one as they are both part of the Presentation layer. If the Layout changes,
+ * usually the styling changes with it.
  */
 
 const AlbumForm: FunctionComponent<AlbumFormProps> = (props) => {

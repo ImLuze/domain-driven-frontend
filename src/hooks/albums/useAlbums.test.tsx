@@ -13,15 +13,14 @@ import { CreateAlbumInput, UpdateAlbumInput } from './models/albumInput';
 
 /**
  * This is a Unit Test for an Interaction layer hook.
- * It mocks our API and tests if our Interaction layer enforces the expected behavior.
+ * It tests if our Interaction layer enforces the expected behavior.
  *
- * Note: Don't write Unit Tests like this. Don't test everything. Unit Tests serve as a way to
- * document code. You should only write a Unit Test for a piece of code if:
- * 1. The piece of logic has some behavior which should be documented or
- *    can't easily be infered from the code.
- * 2. To help with debugging a piece of code.
- *
- * (More on this: https://github.com/ImLuze/frontend-architecture-demo#testing)
+ * Note: The unit tests here are very excessive. Don't unit test everything. Unit Tests serve as
+ * a way to document code. You should only write a Unit Test for a piece of code if:
+ * 1. Your hook solves a complex issue that needs to be documented or you notice from PR reviews
+ *    that someone doesn't understand what you are trying to do.
+ * 2. The issue you are solving is not being covered by an integration test.
+ * 3. You need help debugging something that is cumbersome to test in a real life situation.
  */
 
 const MOCK_SUCCESSFUL_ALBUMS: AlbumsAPI = {
