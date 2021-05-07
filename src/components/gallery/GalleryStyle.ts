@@ -10,32 +10,32 @@ import styled from 'styled-components';
 */
 
 const GalleryStyle = styled.div`
-  grid-area: photos;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  column-gap: 24px;
-  row-gap: 24px;
+	grid-area: photos;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	column-gap: 24px;
+	row-gap: 24px;
 
-  .photo {
-    display: grid;
-    grid-auto-flow: row;
-    row-gap: 16px;
-    width: 100%;
+	.photo {
+		display: grid;
+		grid-auto-flow: row;
+		row-gap: 16px;
+		width: 100%;
 
-    img {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      border: 1px solid black;
-      border-radius: 4px;
-    }
-  }
+		img {
+			width: 100%;
+			aspect-ratio: 1 / 1;
+			border: 1px solid black;
+			border-radius: 4px;
+		}
+	}
 
-  .skeleton {
-    width: 100%;
-    height: 0;
-    padding-bottom: 100%;
-    background-color: lightgray;
-  }
+	.skeleton {
+		width: 100%;
+		height: 0;
+		padding-bottom: 100%;
+		background-color: lightgray;
+	}
 `;
 
 export default GalleryStyle;

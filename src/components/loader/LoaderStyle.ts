@@ -10,7 +10,7 @@ import styled from 'styled-components';
 */
 
 const LoaderStyle = styled.div`
-  display: contents;
+	display: contents;
 `;
 
 export default LoaderStyle;

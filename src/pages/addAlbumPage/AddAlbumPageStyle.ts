@@ -12,20 +12,20 @@ import { Layout } from '../../style/layout';
 */
 
 const AddAlbumPageStyle = styled(Layout)`
-  grid-template-areas:
-    '. header .'
-    '. form   .';
+	grid-template-areas:
+		'. header .'
+		'. form   .';
 
-  .header {
-    grid-area: header;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+	.header {
+		grid-area: header;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
 
-  ${AlbumFormStyle} {
-    grid-area: form;
-  }
+	${AlbumFormStyle} {
+		grid-area: form;
+	}
 `;
 
 export default AddAlbumPageStyle;

@@ -10,15 +10,15 @@ import styled from 'styled-components';
 */
 
 const AlbumCardStyle = styled.div`
-  padding: 16px;
-  border-radius: 4px;
-  border: 1px solid #333;
+	padding: 16px;
+	border-radius: 4px;
+	border: 1px solid #333;
 
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+	.header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
 `;
 
 export default AlbumCardStyle;

@@ -11,26 +11,26 @@ import { Layout } from '../../style/layout';
 */
 
 const AlbumDetailPageStyle = styled(Layout)`
-  display: grid;
-  grid-template-areas:
-    '. header .'
-    '. author .'
-    '. photos .';
+	display: grid;
+	grid-template-areas:
+		'. header .'
+		'. author .'
+		'. photos .';
 
-  .header {
-    grid-area: header;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+	.header {
+		grid-area: header;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
 
-  .author {
-    grid-area: author;
-  }
+	.author {
+		grid-area: author;
+	}
 
-  .photos {
-    grid-area: photos;
-  }
+	.photos {
+		grid-area: photos;
+	}
 `;
 
 export default AlbumDetailPageStyle;

@@ -10,10 +10,10 @@ import styled from 'styled-components';
 */
 
 const AlbumsSectionStyle = styled.section`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 16px;
-  row-gap: 16px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	column-gap: 16px;
+	row-gap: 16px;
 `;
 
 export default AlbumsSectionStyle;
