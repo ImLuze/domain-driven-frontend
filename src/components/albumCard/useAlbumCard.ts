@@ -15,6 +15,10 @@ import { UILogic } from '../../models/logic';
  *
  * In here we never refer to an Interaction layer hook. Apart from its types. It's the concern of
  * the Page Component to pass interaction layer models and operations to these components.
+ *
+ * We also never hook up user events here, that is the concern of the Presentation layer.
+ * (Don't create operations like `OnEnterClick`, `OnClick`, `onSubmit` here, focus on the WHAT, not
+ * the WHEN.)
  */
 
 export interface AlbumCardProps {
