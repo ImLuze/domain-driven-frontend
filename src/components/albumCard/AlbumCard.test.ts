@@ -1,5 +1,4 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import userEvent from '@testing-library/user-event';
 import useAlbumCard, { AlbumCardProps } from './useAlbumCard';
 
 /**
@@ -101,46 +100,46 @@ describe('AlbumCard', () => {
 				expect(result.current.models.errorMessage).toBeFalsy();
 			});
 		});
-	});
 
-	describe('allows a set of user events', () => {
-		describe('when the user presses the enter button', () => {
-			describe('when the title is valid', () => {
-				it('calls updateAlbum with the album id, author id and new title', () => {
-					renderHook(() => useAlbumCard({ ...props, album: { ...props.album, title: 'valid title' } }));
-					expect(props.operations.updateAlbum).not.toBeCalled();
+		describe('submitAlbum', () => {
+			describe('submits the updates to the album', () => {
+				describe('when the title is valid', () => {
+					it('calls updateAlbum with the album id, author id and new title', () => {
+						const { result } = renderHook(() => useAlbumCard({ ...props, album: { ...props.album, title: 'valid title' } }));
+						expect(props.operations.updateAlbum).not.toBeCalled();
 
-					userEvent.keyboard('{Enter}');
-					expect(props.operations.updateAlbum).toBeCalledTimes(1);
-					expect(props.operations.updateAlbum).toBeCalledWith(props.album.id, { title: 'valid title' });
+						act(result.current.operations.submitAlbum);
+						expect(props.operations.updateAlbum).toBeCalledTimes(1);
+						expect(props.operations.updateAlbum).toBeCalledWith(props.album.id, { title: 'valid title' });
+					});
+
+					it('sets isEditing to false', () => {
+						const { result } = renderHook(() => useAlbumCard({ ...props, album: { ...props.album, title: 'valid title' } }));
+						act(() => result.current.operations.setIsEditing(true));
+						expect(result.current.models.isEditing).toBe(true);
+
+						act(result.current.operations.submitAlbum);
+						expect(result.current.models.isEditing).toBe(false);
+					});
 				});
 
-				it('sets isEditing to false', () => {
-					const { result } = renderHook(() => useAlbumCard({ ...props, album: { ...props.album, title: 'valid title' } }));
-					act(() => result.current.operations.setIsEditing(true));
-					expect(result.current.models.isEditing).toBe(true);
+				describe('when the title is invalid', () => {
+					it('does not call updateAlbum', () => {
+						const { result } = renderHook(() => useAlbumCard({ ...props, album: { ...props.album, title: 'invalid title' } }));
+						expect(props.operations.updateAlbum).not.toBeCalled();
 
-					userEvent.keyboard('{Enter}');
-					expect(result.current.models.isEditing).toBe(false);
-				});
-			});
+						act(result.current.operations.submitAlbum);
+						expect(props.operations.updateAlbum).not.toBeCalled();
+					});
 
-			describe('when the title is invalid', () => {
-				it('does not call updateAlbum', () => {
-					renderHook(() => useAlbumCard({ ...props, album: { ...props.album, title: 'invalid title' } }));
-					expect(props.operations.updateAlbum).not.toBeCalled();
+					it('does not set isEditing to false', () => {
+						const { result } = renderHook(() => useAlbumCard({ ...props, album: { ...props.album, title: 'invalid title' } }));
+						act(() => result.current.operations.setIsEditing(true));
+						expect(result.current.models.isEditing).toBe(true);
 
-					userEvent.keyboard('{Enter}');
-					expect(props.operations.updateAlbum).not.toBeCalled();
-				});
-
-				it('does not set isEditing to false', () => {
-					const { result } = renderHook(() => useAlbumCard({ ...props, album: { ...props.album, title: 'invalid title' } }));
-					act(() => result.current.operations.setIsEditing(true));
-					expect(result.current.models.isEditing).toBe(true);
-
-					userEvent.keyboard('{Enter}');
-					expect(result.current.models.isEditing).toBe(true);
+						act(result.current.operations.submitAlbum);
+						expect(result.current.models.isEditing).toBe(true);
+					});
 				});
 			});
 		});

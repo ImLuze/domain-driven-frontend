@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, KeyboardEventHandler } from 'react';
 import { Link } from 'react-router-dom';
 import AlbumCardStyle from './AlbumCardStyle';
 import useAlbumCard, { AlbumCardProps } from './useAlbumCard';
@@ -16,10 +16,16 @@ const AlbumCard: FunctionComponent<AlbumCardProps> = (props) => {
 	const {
 		title, username, url, isEditing, errorMessage,
 	} = models;
-	const { setTitle, setIsEditing } = operations;
+	const { setTitle, setIsEditing, submitAlbum } = operations;
+
+	/* OnEnterClick is an event handler, it's part of hooking up UI Logic to user events. While the UI
+	Logic decides WHAT happens, the Presentation component decides WHEN it happens. */
+	const onEnterClick: KeyboardEventHandler<HTMLDivElement> = (event) => {
+		if (event.key === 'Enter') submitAlbum();
+	};
 
 	return (
-		<AlbumCardStyle>
+		<AlbumCardStyle onKeyDown={onEnterClick}>
 			{errorMessage && <p>{errorMessage}</p>}
 			{isEditing
 				? <input type="text" value={title} onChange={(e) => setTitle(e.currentTarget.value)} />

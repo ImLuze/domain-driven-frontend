@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Author, Album } from '../../hooks/albums/models/album';
 import { UpdateAlbumInput } from '../../hooks/albums/models/albumInput';
 import { ValidationResult } from '../../hooks/validator/models/ValidationResult';
@@ -39,6 +39,7 @@ interface Models {
 interface Operations {
 	setIsEditing: (isEditing: Models['isEditing']) => void;
 	setTitle: (title: Models['title']) => void;
+	submitAlbum: () => void;
 }
 
 const useAlbumCard = (props: AlbumCardProps): UILogic<Operations, Models> => {
@@ -52,24 +53,15 @@ const useAlbumCard = (props: AlbumCardProps): UILogic<Operations, Models> => {
 	const [isEditing, setIsEditing] = useState<Models['isEditing']>(false);
 	const { isValid: isTitleValid, errorMessage } = validateTitle(title);
 
-	// This hook might be a good example of logic that would be good to document in a Unit Test.
-	useEffect(() => {
-		const onEnterClick = (event: KeyboardEvent): void => {
-			if (event.key === 'Enter' && isTitleValid) {
-				updateAlbum(album.id, { title });
-				setIsEditing(false);
-			}
-		};
-
-		window.addEventListener('keydown', onEnterClick);
-
-		return (): void => {
-			window.removeEventListener('keydown', onEnterClick);
-		};
-	}, [title]);
+	const submitAlbum: Operations['submitAlbum'] = () => {
+		if (isTitleValid) {
+			updateAlbum(album.id, { title });
+			setIsEditing(false);
+		}
+	};
 
 	return {
-		operations: { setIsEditing, setTitle },
+		operations: { setIsEditing, setTitle, submitAlbum },
 		models: {
 			title, url, username, isEditing, errorMessage,
 		},
