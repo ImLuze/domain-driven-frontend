@@ -4,13 +4,17 @@ import './style/index.css';
 import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
-import worker from './mocks/worker';
+// import worker from './mocks/worker';
 import client from './client';
 import Routes from './Routes';
 
-if (process.env.NODE_ENV === 'development') {
-	worker.start();
-}
+/**
+ * API down? Uncomment this to use the mock API in the browser.
+ */
+
+// if (process.env.NODE_ENV === 'development') {
+// worker.start();
+// }
 
 const App: FunctionComponent = () => (
 	<StrictMode>
