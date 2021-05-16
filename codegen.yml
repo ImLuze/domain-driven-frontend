@@ -21,6 +21,3 @@ generates:
       - fragment-matcher
     config:
       omitOperationSuffix: true
-  ./graphql.schema.json:
-    plugins:
-      - introspection

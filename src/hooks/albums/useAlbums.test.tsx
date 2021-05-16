@@ -3,13 +3,14 @@ import { FunctionComponent } from 'react';
 import { ApolloError, ApolloProvider } from '@apollo/client';
 import { act } from 'react-dom/test-utils';
 import client from '../../client';
-import useAlbums, { AlbumsAPI } from './useAlbums';
+import useAlbums from './useAlbums';
 import { Album } from './models/album';
 import * as useCreateAlbum from './models/createAlbum';
 import * as useDeleteAlbum from './models/deleteAlbum';
 import * as useUpdateAlbum from './models/updateAlbum';
 import { CreateAlbumInput, UpdateAlbumInput } from './models/albumInput';
 import MOCK_ALBUMS from '../../mocks/data/albums';
+import { ApolloAPI } from '../../models/API';
 
 /**
  * This is a Unit Test for an Interaction layer hook.
@@ -23,25 +24,25 @@ import MOCK_ALBUMS from '../../mocks/data/albums';
  * 3. You need help debugging something that is cumbersome to test in a real life situation.
  */
 
-const MOCK_SUCCESSFUL_ALBUMS: AlbumsAPI = {
+const MOCK_SUCCESSFUL_ALBUMS: ApolloAPI<'albums'> = {
 	data: { albums: { data: MOCK_ALBUMS } },
 	loading: false,
 	error: undefined,
 };
 
-const MOCK_SUCCESSFUL_ALBUM: AlbumsAPI = {
+const MOCK_SUCCESSFUL_ALBUM: ApolloAPI<'album'> = {
 	data: { album: MOCK_ALBUMS[0] },
 	loading: false,
 	error: undefined,
 };
 
-const MOCK_LOADING: AlbumsAPI = {
+const MOCK_LOADING: ApolloAPI<'albums' | 'album'> = {
 	data: undefined,
 	loading: true,
 	error: undefined,
 };
 
-const MOCK_FAILED: AlbumsAPI = {
+const MOCK_FAILED: ApolloAPI<'albums' | 'album'> = {
 	data: undefined,
 	loading: false,
 	error: new ApolloError({}),

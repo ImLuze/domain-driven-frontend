@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import useAlbums from '../../hooks/albums/useAlbums';
-import { PageComponent } from '../../models/PageComponent';
+import { PageComponent } from '../../models/component';
 import AlbumsPageStyle from './AlbumsPageStyle';
 import AlbumsSection from './components/albumsSection/AlbumsSection';
 import { useGetAlbums } from './models/getAlbums';

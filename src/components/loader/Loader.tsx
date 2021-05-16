@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { UIComponent } from '../../models/component';
 import LoaderStyle from './LoaderStyle';
 
 /**
@@ -12,7 +12,7 @@ interface Props {
 	isLoading: boolean;
 }
 
-const Loader: FunctionComponent<Props> = ({ isLoading, children }) => (
+const Loader: UIComponent<Props> = ({ isLoading, children }) => (
 	<LoaderStyle>
 		{isLoading
 			? <p>Loading...</p>

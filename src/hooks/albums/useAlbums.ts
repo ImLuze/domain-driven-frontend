@@ -1,6 +1,7 @@
 import { ApolloError } from '@apollo/client';
+import { ApolloAPI } from '../../models/API';
 import { InteractionLogic } from '../../models/logic';
-import { Maybe, Album as AlbumDTO, Query } from '../../models/schema';
+import { Maybe, Album as AlbumDTO } from '../../models/schema';
 import useRoutes from '../routes/useRoutes';
 import useValidator, { Validate } from '../validator/useValidator';
 import AlbumMapper from './AlbumMapper';
@@ -15,11 +16,7 @@ import { useUpdateAlbum } from './models/updateAlbum';
  * can handle data from the `albums` and the `album` query.
  */
 
-export interface AlbumsAPI {
-	data?: Maybe<Pick<Query, 'albums' | 'album'>>;
-	loading: boolean;
-	error?: ApolloError;
-}
+type API = ApolloAPI<'albums' | 'album'>;
 
 interface Operations {
 	createAlbum: (input: CreateAlbumInput) => Promise<void>;
@@ -36,7 +33,7 @@ interface Models {
 	error?: ApolloError;
 }
 
-const useAlbums = (albumsAPI?: AlbumsAPI): InteractionLogic<Operations, Models> => {
+const useAlbums: InteractionLogic<API, Operations, Models> = (albumsAPI) => {
 	const { operations: { goToAlbumDetail }, models: routes } = useRoutes();
 	const [createAlbumMutation] = useCreateAlbum();
 	const [updateAlbumMutation] = useUpdateAlbum();
@@ -81,7 +78,7 @@ const useAlbums = (albumsAPI?: AlbumsAPI): InteractionLogic<Operations, Models> 
 		await deleteAlbumMutation({ variables: { id } });
 	};
 
-	const extractAlbumDTOsFromData = (data: AlbumsAPI['data']): Maybe<AlbumDTO>[] => {
+	const extractAlbumDTOsFromData = (data: API['data']): Maybe<AlbumDTO>[] => {
 		if (data?.albums?.data) {
 			return data?.albums.data;
 		}

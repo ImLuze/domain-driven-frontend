@@ -1,5 +1,6 @@
-import { FunctionComponent, KeyboardEventHandler } from 'react';
+import { KeyboardEventHandler } from 'react';
 import { Link } from 'react-router-dom';
+import { UIComponent } from '../../models/component';
 import AlbumCardStyle from './AlbumCardStyle';
 import useAlbumCard, { AlbumCardProps } from './useAlbumCard';
 
@@ -11,7 +12,7 @@ import useAlbumCard, { AlbumCardProps } from './useAlbumCard';
  * usually the styling changes with it.
  */
 
-const AlbumCard: FunctionComponent<AlbumCardProps> = (props) => {
+const AlbumCard: UIComponent<AlbumCardProps> = (props) => {
 	const { models, operations } = useAlbumCard(props);
 	const {
 		title, username, url, isEditing, errorMessage,

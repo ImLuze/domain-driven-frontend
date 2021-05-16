@@ -21,7 +21,7 @@ export type GetAlbumById = (
       { __typename?: 'PhotosPage' }
       & { data?: Types.Maybe<Array<Types.Maybe<(
         { __typename?: 'Photo' }
-        & Pick<Types.Photo, 'id' | 'url'>
+        & Pick<Types.Photo, 'id' | 'url' | 'title'>
       )>>> }
     )> }
   )> }
@@ -41,6 +41,7 @@ export const GetAlbumByIdDocument = gql`
       data {
         id
         url
+        title
       }
     }
   }

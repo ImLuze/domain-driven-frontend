@@ -2,7 +2,7 @@ import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import Gallery from '../../components/gallery/Gallery';
 import useAlbums from '../../hooks/albums/useAlbums';
-import { PageComponent } from '../../models/PageComponent';
+import { PageComponent } from '../../models/component';
 import AlbumDetailPageStyle from './AlbumDetailPageStyle';
 import { useGetAlbumById } from './models/getAlbumById';
 

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import AlbumForm from '../../components/albumForm/AlbumForm';
 import useAlbums from '../../hooks/albums/useAlbums';
-import { PageComponent } from '../../models/PageComponent';
+import { PageComponent } from '../../models/component';
 import AddAlbumPageStyle from './AddAlbumPageStyle';
 
 /**

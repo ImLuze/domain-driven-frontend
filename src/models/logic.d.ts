@@ -1,3 +1,10 @@
+import { API } from './API';
+
+interface Logic<O, M> {
+	operations: O;
+	models: M;
+}
+
 /**
  * @summary
  * Logic specific to this component.
@@ -12,10 +19,7 @@
  * useTodoComponent => { isCompleted, title, body, dueDate, completeTodo, removeTodo }
  * useChessPiece => { type, color, currentPosition, pickPieceUp }
  */
-export interface UILogic<O, M> {
-	operations: O;
-	models: M;
-}
+export type UILogic<P, O, M> = (props: P) => Logic<O, M>;
 
 /**
  * @summary
@@ -34,7 +38,4 @@ export interface UILogic<O, M> {
  * useTodos => { createTodo, completeTodo, changeDueDate, removeTodo, todos, completedTodos }
  * useChess => { pickPieceUp, movePiece, validMoves, pieces }
  */
-export interface InteractionLogic<O, M> {
-	operations: O;
-	models: M;
-}
+export type InteractionLogic<A extends API, O, M> = (api?: A) => Logic<O, M>;

@@ -31,6 +31,8 @@ export interface AlbumCardProps {
 	};
 }
 
+type Props = AlbumCardProps;
+
 interface Models {
 	// While 'string' would be correct, this is more precise.
 	title: AlbumCardProps['album']['title'];
@@ -46,8 +48,7 @@ interface Operations {
 	submitAlbum: () => void;
 }
 
-const useAlbumCard = (props: AlbumCardProps): UILogic<Operations, Models> => {
-	const { album, author, operations } = props;
+const useAlbumCard: UILogic<Props, Operations, Models> = ({ album, author, operations }) => {
 	const { updateAlbum, validateTitle } = operations;
 
 	const { url } = album;

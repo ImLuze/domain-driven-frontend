@@ -22,7 +22,7 @@ interface Operations {
 
 type Models = Routes;
 
-const useRoutes = (): InteractionLogic<Operations, Models> => {
+const useRoutes: InteractionLogic<{}, Operations, Models> = () => {
 	const history = useHistory();
 
 	const routes: Models = {

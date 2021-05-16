@@ -1,8 +1,8 @@
-import { FunctionComponent } from 'react';
 import AlbumCard from '../../../../components/albumCard/AlbumCard';
 import { AlbumCardProps } from '../../../../components/albumCard/useAlbumCard';
 import Loader from '../../../../components/loader/Loader';
 import { Album } from '../../../../hooks/albums/models/album';
+import { UIComponent } from '../../../../models/component';
 import AlbumsSectionStyle from './AlbumsSectionStyle';
 
 /**
@@ -18,6 +18,8 @@ import AlbumsSectionStyle from './AlbumsSectionStyle';
  * (Notice how the `AlbumsSectionStyle` component is actually a section and not a div. Having
  * semantically correct sections is a good indication that you can split them up in separate
  * components.)
+ *
+ * (Notice how this component is of the `UIComponent` type.)
  */
 
 interface Operations {
@@ -32,7 +34,7 @@ interface Props {
 	operations: Operations;
 }
 
-const AlbumsSection: FunctionComponent<Props> = ({
+const AlbumsSection: UIComponent<Props> = ({
 	albums, isLoading, hasError, operations,
 }) => {
 	const renderAlbumCard = (album: Album) => (

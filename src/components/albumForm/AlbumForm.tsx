@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { UIComponent } from '../../models/component';
 import Gallery from '../gallery/Gallery';
 import AlbumFormStyle from './AlbumFormStyle';
 import useAlbumForm, { AlbumFormProps } from './useAlbumForm';
@@ -11,7 +11,7 @@ import useAlbumForm, { AlbumFormProps } from './useAlbumForm';
  * usually the styling changes with it.
  */
 
-const AlbumForm: FunctionComponent<AlbumFormProps> = (props) => {
+const AlbumForm: UIComponent<AlbumFormProps> = (props) => {
 	const { operations, models } = useAlbumForm(props);
 	const {
 		addPhoto, removePhotoAtIndex, saveAlbum, setTitle,

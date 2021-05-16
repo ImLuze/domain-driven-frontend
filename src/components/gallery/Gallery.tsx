@@ -1,5 +1,5 @@
-import { FunctionComponent } from 'react';
 import { Photo } from '../../hooks/albums/models/album';
+import { UIComponent } from '../../models/component';
 import GalleryStyle from './GalleryStyle';
 
 /**
@@ -16,15 +16,15 @@ interface GalleryProps {
 	callToAction?: string;
 }
 
-const Gallery: FunctionComponent<GalleryProps> = ({
+const Gallery: UIComponent<GalleryProps> = ({
 	photos, action, callToAction, isLoading,
 }) => {
-	const renderSkeletonPhoto = (): JSX.Element => (
-		<div className="skeleton photo" />
+	const renderSkeletonPhoto = (number: number, index: number): JSX.Element => (
+		<div className="skeleton photo" key={index} />
 	);
 
 	const renderPhoto = (photo: GalleryProps['photos'][number], index: number): JSX.Element => (
-		<div className="photo">
+		<div className="photo" key={index}>
 			<img src={photo.url} alt={photo.alt} />
 			{action && <button type="button" onClick={() => action(index)}>{callToAction}</button>}
 		</div>
