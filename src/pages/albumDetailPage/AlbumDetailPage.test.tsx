@@ -5,7 +5,9 @@ import { graphql, RequestHandler } from 'msw';
 import { FunctionComponent } from 'react';
 import { MemoryRouter } from 'react-router';
 import client from '../../client';
+import db from '../../mocks/db';
 import server from '../../mocks/server';
+import { Album } from '../../models/schema';
 import Routes from '../../Routes';
 
 /**
@@ -18,6 +20,8 @@ import Routes from '../../Routes';
  * When you're running low on time, skip the unit tests and focus on these Integration tests.
 */
 
+const albums: Album[] = db.album.getAll();
+
 const mockErrorResponse: RequestHandler = graphql.query('getAlbumById', (req, res, ctx) => res(
 	ctx.status(404),
 	ctx.errors([{ message: 'Not found' }]),
@@ -25,7 +29,7 @@ const mockErrorResponse: RequestHandler = graphql.query('getAlbumById', (req, re
 
 const MockedAlbumDetailPage: FunctionComponent = () => (
 	<ApolloProvider client={client}>
-		<MemoryRouter initialEntries={['/albums/0']}>
+		<MemoryRouter initialEntries={[`/albums/${albums[0].id}`]}>
 			<Routes />
 		</MemoryRouter>
 	</ApolloProvider>
@@ -53,8 +57,8 @@ describe('AlbumDetailPage', () => {
 	describe('when the album loaded successfully', () => {
 		it('shows the album title', async () => {
 			render(<MockedAlbumDetailPage />);
-			await screen.findByText(/title/);
-			expect(screen.getByRole('heading', { name: /title/ })).toBeInTheDocument();
+			await screen.findByText(albums[0].title!);
+			expect(screen.getByRole('heading', { name: albums[0].title! })).toBeInTheDocument();
 		});
 
 		it('shows all photos in the album', async () => {
@@ -65,8 +69,8 @@ describe('AlbumDetailPage', () => {
 
 		it('shows the username of the user who last edited the album', async () => {
 			render(<MockedAlbumDetailPage />);
-			await screen.findByText(/username/);
-			expect(screen.getByText(/username/)).toBeInTheDocument();
+			await screen.findByText(albums[0].user?.username!);
+			expect(screen.getByText(albums[0].user?.username!)).toBeInTheDocument();
 		});
 	});
 

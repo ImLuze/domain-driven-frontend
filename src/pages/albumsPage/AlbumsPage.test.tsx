@@ -5,6 +5,7 @@ import { RequestHandler, graphql } from 'msw';
 import { FunctionComponent } from 'react';
 import { MemoryRouter } from 'react-router';
 import client from '../../client';
+import db from '../../mocks/db';
 import server from '../../mocks/server';
 import Routes from '../../Routes';
 
@@ -17,6 +18,8 @@ import Routes from '../../Routes';
  *
  * When you're running low on time, skip the unit tests and focus on these Integration tests.
 */
+
+const albums = db.album.getAll();
 
 const mockErrorResponse: RequestHandler = graphql.query('getAlbums', (req, res, ctx) => res(
 	ctx.status(404),
@@ -54,8 +57,13 @@ describe('AlbumsPage', () => {
 		it('renders all albums', async () => {
 			render(<MockedAlbumsPage />);
 
-			await screen.findAllByText(/title/);
-			expect(screen.getAllByRole('heading', { name: /title/ })).toHaveLength(6);
+			await screen.findAllByText(albums[0].title);
+
+			const foundAlbums = albums.map((album) => (
+				screen.getByRole('heading', { name: album.title })
+			));
+
+			expect(foundAlbums).toHaveLength(db.album.count());
 		});
 
 		describe('allows the user to edit the album title', () => {
@@ -67,12 +75,12 @@ describe('AlbumsPage', () => {
 					expect(screen.queryByText(/new title/)).not.toBeInTheDocument();
 
 					userEvent.click(screen.getAllByRole('button', { name: /edit/ })[0]);
-					userEvent.type(screen.getByRole('textbox'), '{backspace}{backspace}{backspace}{backspace}{backspace}{backspace}{backspace}');
+					userEvent.clear(screen.getByRole('textbox'));
 					userEvent.type(screen.getByRole('textbox'), 'new-title');
 					userEvent.keyboard('{Enter}');
 					expect(screen.getByText(/illegal character/)).toBeInTheDocument();
 
-					userEvent.type(screen.getByRole('textbox'), '{backspace}{backspace}{backspace}{backspace}{backspace}{backspace}{backspace}{backspace}{backspace}');
+					userEvent.clear(screen.getByRole('textbox'));
 					userEvent.type(screen.getByRole('textbox'), 'abcd');
 					userEvent.keyboard('{Enter}');
 					expect(screen.getByText(/at least 5 characters/)).toBeInTheDocument();

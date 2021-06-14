@@ -3,14 +3,15 @@ import { FunctionComponent } from 'react';
 import { ApolloError, ApolloProvider } from '@apollo/client';
 import { act } from 'react-dom/test-utils';
 import client from '../../client';
-import useAlbums from './useAlbums';
+import useAlbums, { AlbumsAPI } from './useAlbums';
 import { Album } from './models/album';
 import * as useCreateAlbum from './models/createAlbum';
 import * as useDeleteAlbum from './models/deleteAlbum';
 import * as useUpdateAlbum from './models/updateAlbum';
 import { CreateAlbumInput, UpdateAlbumInput } from './models/albumInput';
-import MOCK_ALBUMS from '../../mocks/data/albums';
 import { ApolloAPI } from '../../models/API';
+import db from '../../mocks/db';
+import { Album as AlbumDTO } from '../../models/schema';
 
 /**
  * This is a Unit Test for an Interaction layer hook.
@@ -24,14 +25,16 @@ import { ApolloAPI } from '../../models/API';
  * 3. You need help debugging something that is cumbersome to test in a real life situation.
  */
 
+const albums: AlbumDTO[] = db.album.getAll();
+
 const MOCK_SUCCESSFUL_ALBUMS: ApolloAPI<'albums'> = {
-	data: { albums: { data: MOCK_ALBUMS } },
+	data: { albums: { data: albums } },
 	loading: false,
 	error: undefined,
 };
 
 const MOCK_SUCCESSFUL_ALBUM: ApolloAPI<'album'> = {
-	data: { album: MOCK_ALBUMS[0] },
+	data: { album: albums[0] },
 	loading: false,
 	error: undefined,
 };
@@ -48,86 +51,17 @@ const MOCK_FAILED: ApolloAPI<'albums' | 'album'> = {
 	error: new ApolloError({}),
 };
 
-const EXPECTED_ALBUMS: Album[] = [
-	{
-		id: '0',
-		title: 'title 0',
-		url: '/albums/0',
-		author: { id: '0', username: 'username 0' },
-		photos: [
-			{ id: '0', alt: 'title 0', url: '/photo/0' },
-			{ id: '1', alt: 'title 1', url: '/photo/1' },
-			{ id: '2', alt: 'title 2', url: '/photo/2' },
-			{ id: '3', alt: 'title 3', url: '/photo/3' },
-			{ id: '4', alt: 'title 4', url: '/photo/4' },
-		],
-	},
-	{
-		id: '1',
-		title: 'title 1',
-		url: '/albums/1',
-		author: { id: '1', username: 'username 1' },
-		photos: [
-			{ id: '0', alt: 'title 0', url: '/photo/0' },
-			{ id: '1', alt: 'title 1', url: '/photo/1' },
-			{ id: '2', alt: 'title 2', url: '/photo/2' },
-			{ id: '3', alt: 'title 3', url: '/photo/3' },
-			{ id: '4', alt: 'title 4', url: '/photo/4' },
-		],
-	},
-	{
-		id: '2',
-		title: 'title 2',
-		url: '/albums/2',
-		author: { id: '2', username: 'username 2' },
-		photos: [
-			{ id: '0', alt: 'title 0', url: '/photo/0' },
-			{ id: '1', alt: 'title 1', url: '/photo/1' },
-			{ id: '2', alt: 'title 2', url: '/photo/2' },
-			{ id: '3', alt: 'title 3', url: '/photo/3' },
-			{ id: '4', alt: 'title 4', url: '/photo/4' },
-		],
-	},
-	{
-		id: '3',
-		title: 'title 3',
-		url: '/albums/3',
-		author: { id: '3', username: 'username 3' },
-		photos: [
-			{ id: '0', alt: 'title 0', url: '/photo/0' },
-			{ id: '1', alt: 'title 1', url: '/photo/1' },
-			{ id: '2', alt: 'title 2', url: '/photo/2' },
-			{ id: '3', alt: 'title 3', url: '/photo/3' },
-			{ id: '4', alt: 'title 4', url: '/photo/4' },
-		],
-	},
-	{
-		id: '4',
-		title: 'title 4',
-		url: '/albums/4',
-		author: { id: '4', username: 'username 4' },
-		photos: [
-			{ id: '0', alt: 'title 0', url: '/photo/0' },
-			{ id: '1', alt: 'title 1', url: '/photo/1' },
-			{ id: '2', alt: 'title 2', url: '/photo/2' },
-			{ id: '3', alt: 'title 3', url: '/photo/3' },
-			{ id: '4', alt: 'title 4', url: '/photo/4' },
-		],
-	},
-	{
-		id: '5',
-		title: 'title 5',
-		url: '/albums/5',
-		author: { id: '5', username: 'username 5' },
-		photos: [
-			{ id: '0', alt: 'title 0', url: '/photo/0' },
-			{ id: '1', alt: 'title 1', url: '/photo/1' },
-			{ id: '2', alt: 'title 2', url: '/photo/2' },
-			{ id: '3', alt: 'title 3', url: '/photo/3' },
-			{ id: '4', alt: 'title 4', url: '/photo/4' },
-		],
-	},
-];
+const EXPECTED_ALBUMS: Album[] = albums.map((album) => ({
+	id: album.id || '',
+	title: album.title || '',
+	url: `/albums/${album.id}`,
+	author: { id: album.user?.id || '', username: album.user?.username || 'unknown' },
+	photos: album.photos?.data?.map((photo) => ({
+		id: photo?.id || '',
+		alt: photo?.title || 'no title',
+		url: photo?.url || '',
+	})) || [],
+}));
 
 const wrapper: FunctionComponent = ({ children }) => (
 	<ApolloProvider client={client}>
@@ -233,7 +167,7 @@ describe('useAlbums', () => {
 
 		describe('createAlbum', () => {
 			describe('when title is valid and has at least 1 photo', () => {
-				it('calls the createAlbum mutation', () => {
+				it('calls the createAlbum mutation', async () => {
 					const createAlbumMutation = jest.fn();
 					jest.spyOn(useCreateAlbum, 'useCreateAlbum').mockReturnValue([createAlbumMutation, {
 						called: true, loading: false, data: undefined, error: undefined, client,
@@ -242,7 +176,7 @@ describe('useAlbums', () => {
 					const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
 					expect(createAlbumMutation).toHaveBeenCalledTimes(0);
 
-					act(() => result.current.operations.createAlbum({ title: 'abcde', photos: PHOTOS }));
+					await act(async () => result.current.operations.createAlbum({ title: 'abcde', photos: PHOTOS }));
 					expect(createAlbumMutation).toHaveBeenCalledTimes(1);
 				});
 
@@ -256,7 +190,7 @@ describe('useAlbums', () => {
 			});
 
 			describe('when title is invalid or has no photos', () => {
-				it('does nothing', () => {
+				it('does nothing', async () => {
 					const createAlbumMutation = jest.fn();
 					jest.spyOn(useCreateAlbum, 'useCreateAlbum').mockReturnValue([createAlbumMutation, {
 						called: true, loading: false, data: undefined, error: undefined, client,
@@ -265,10 +199,10 @@ describe('useAlbums', () => {
 					const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
 					expect(createAlbumMutation).toHaveBeenCalledTimes(0);
 
-					act(() => result.current.operations.createAlbum({ title: 'abcd', photos: PHOTOS }));
+					await act(async () => result.current.operations.createAlbum({ title: 'abcd', photos: PHOTOS }));
 					expect(createAlbumMutation).toHaveBeenCalledTimes(0);
 
-					act(() => result.current.operations.createAlbum({ title: 'abcde', photos: [] }));
+					await act(async () => result.current.operations.createAlbum({ title: 'abcde', photos: [] }));
 					expect(createAlbumMutation).toHaveBeenCalledTimes(0);
 				});
 			});
@@ -276,7 +210,7 @@ describe('useAlbums', () => {
 
 		describe('updateAlbum', () => {
 			describe('when title is valid', () => {
-				it('calls the updateAlbum mutation', () => {
+				it('calls the updateAlbum mutation', async () => {
 					const updateAlbumMutation = jest.fn();
 					jest.spyOn(useUpdateAlbum, 'useUpdateAlbum').mockReturnValue([updateAlbumMutation, {
 						called: true, loading: false, data: undefined, error: undefined, client,
@@ -284,13 +218,13 @@ describe('useAlbums', () => {
 					const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
 					expect(updateAlbumMutation).toHaveBeenCalledTimes(0);
 
-					act(() => result.current.operations.updateAlbum('0', { title: 'abcde' }));
+					await act(async () => result.current.operations.updateAlbum('0', { title: 'abcde' }));
 					expect(updateAlbumMutation).toHaveBeenCalledTimes(1);
 				});
 			});
 
 			describe('when title is invalid', () => {
-				it('does nothing', () => {
+				it('does nothing', async () => {
 					const updateAlbumMutation = jest.fn();
 					jest.spyOn(useUpdateAlbum, 'useUpdateAlbum').mockReturnValue([updateAlbumMutation, {
 						called: true, loading: false, data: undefined, error: undefined, client,
@@ -299,13 +233,13 @@ describe('useAlbums', () => {
 					const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
 					expect(updateAlbumMutation).toHaveBeenCalledTimes(0);
 
-					act(() => result.current.operations.updateAlbum('0', { title: 'abcd' }));
+					await act(async () => result.current.operations.updateAlbum('0', { title: 'abcd' }));
 					expect(updateAlbumMutation).toHaveBeenCalledTimes(0);
 				});
 			});
 
 			describe('when there is at least 1 photo', () => {
-				it('calls the updateAlbum mutation', () => {
+				it('calls the updateAlbum mutation', async () => {
 					const updateAlbumMutation = jest.fn();
 					jest.spyOn(useUpdateAlbum, 'useUpdateAlbum').mockReturnValue([updateAlbumMutation, {
 						called: true, loading: false, data: undefined, error: undefined, client,
@@ -314,13 +248,13 @@ describe('useAlbums', () => {
 					const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
 					expect(updateAlbumMutation).toHaveBeenCalledTimes(0);
 
-					act(() => result.current.operations.updateAlbum('0', { photos: PHOTOS }));
+					await act(async () => result.current.operations.updateAlbum('0', { photos: PHOTOS }));
 					expect(updateAlbumMutation).toHaveBeenCalledTimes(1);
 				});
 			});
 
 			describe('when the photos array is empty', () => {
-				it('does nothing', () => {
+				it('does nothing', async () => {
 					const updateAlbumMutation = jest.fn();
 					jest.spyOn(useUpdateAlbum, 'useUpdateAlbum').mockReturnValue([updateAlbumMutation, {
 						called: true, loading: false, data: undefined, error: undefined, client,
@@ -328,14 +262,14 @@ describe('useAlbums', () => {
 					const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
 					expect(updateAlbumMutation).toHaveBeenCalledTimes(0);
 
-					act(() => result.current.operations.updateAlbum('0', { photos: [] }));
+					await act(async () => result.current.operations.updateAlbum('0', { photos: [] }));
 					expect(updateAlbumMutation).toHaveBeenCalledTimes(0);
 				});
 			});
 		});
 
 		describe('deleteAlbum', () => {
-			it('calls the deleteAlbum mutation', () => {
+			it('calls the deleteAlbum mutation', async () => {
 				const deleteAlbumMutation = jest.fn();
 				jest.spyOn(useDeleteAlbum, 'useDeleteAlbum').mockReturnValue([deleteAlbumMutation, {
 					called: true, loading: false, data: undefined, error: undefined, client,
@@ -343,7 +277,7 @@ describe('useAlbums', () => {
 				const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
 				expect(deleteAlbumMutation).toHaveBeenCalledTimes(0);
 
-				act(() => result.current.operations.deleteAlbum('0'));
+				await act(async () => result.current.operations.deleteAlbum('0'));
 				expect(deleteAlbumMutation).toHaveBeenCalledTimes(1);
 			});
 		});

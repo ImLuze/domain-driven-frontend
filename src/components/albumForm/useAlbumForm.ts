@@ -46,8 +46,7 @@ interface Operations {
 	saveAlbum: () => void;
 }
 
-const useAlbumForm = (props: AlbumFormProps): UILogic<Operations, Models> => {
-	const { operations } = props;
+const useAlbumForm: UILogic<AlbumFormProps, Operations, Models> = ({ operations }) => {
 	const {
 		onSubmit, validateTitle, validatePhotos,
 	} = operations;

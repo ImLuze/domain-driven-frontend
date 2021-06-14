@@ -12,18 +12,18 @@ import AlbumsSectionStyle from './components/albumsSection/AlbumsSectionStyle';
 */
 
 export default styled(Layout)`
-  grid-template-areas:
-    '. header  .'
-    '. albums .';
+	grid-template-areas:
+		'. header  .'
+		'. albums .';
 
-  .header {
-    grid-area: header;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+	.header {
+		grid-area: header;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
 
-  ${AlbumsSectionStyle} {
-    grid-area: albums;
-  }
+	${AlbumsSectionStyle} {
+		grid-area: albums;
+	}
 `;

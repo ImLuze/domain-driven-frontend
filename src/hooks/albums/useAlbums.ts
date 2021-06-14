@@ -16,7 +16,7 @@ import { useUpdateAlbum } from './models/updateAlbum';
  * can handle data from the `albums` and the `album` query.
  */
 
-type API = ApolloAPI<'albums' | 'album'>;
+export type AlbumsAPI = ApolloAPI<'albums' | 'album'>;
 
 interface Operations {
 	createAlbum: (input: CreateAlbumInput) => Promise<void>;
@@ -33,9 +33,9 @@ interface Models {
 	error?: ApolloError;
 }
 
-const useAlbums: InteractionLogic<API, Operations, Models> = (albumsAPI) => {
+const useAlbums: InteractionLogic<AlbumsAPI, Operations, Models> = (albumsAPI) => {
 	const { operations: { goToAlbumDetail }, models: routes } = useRoutes();
-	const [createAlbumMutation] = useCreateAlbum();
+	const [createAlbumMutation] = useCreateAlbum({ refetchQueries: ['getAlbums'] });
 	const [updateAlbumMutation] = useUpdateAlbum();
 	const [deleteAlbumMutation] = useDeleteAlbum();
 	const mapper = new AlbumMapper(routes);
@@ -78,7 +78,7 @@ const useAlbums: InteractionLogic<API, Operations, Models> = (albumsAPI) => {
 		await deleteAlbumMutation({ variables: { id } });
 	};
 
-	const extractAlbumDTOsFromData = (data: API['data']): Maybe<AlbumDTO>[] => {
+	const extractAlbumDTOsFromData = (data: AlbumsAPI['data']): Maybe<AlbumDTO>[] => {
 		if (data?.albums?.data) {
 			return data?.albums.data;
 		}

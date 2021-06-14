@@ -128,9 +128,25 @@ describe('AddAlbumPage', () => {
 					userEvent.upload(screen.getByLabelText(/Add a photo/), file);
 					userEvent.click(screen.getByRole('button', { name: /Add album/ }));
 
-					await screen.findByRole('heading', { name: /title 0/ });
+					await screen.findByRole('heading', { name: 'new title' });
 					expect(screen.queryByRole('heading', { name: /Add new album/ })).not.toBeInTheDocument();
-					expect(screen.getByRole('heading', { name: /title 0/ })).toBeInTheDocument();
+					expect(screen.getByRole('heading', { name: 'new title' })).toBeInTheDocument();
+				});
+
+				it('shows the new album on the album overview page', async () => {
+					const file = new File(['test'], 'test.png', { type: 'image/png' });
+					render(<MockedAddAlbumPage />);
+
+					userEvent.type(screen.getByPlaceholderText(/title/), 'new title');
+					userEvent.upload(screen.getByLabelText(/Add a photo/), file);
+					userEvent.click(screen.getByRole('button', { name: /Add album/ }));
+
+					await screen.findByRole('heading', { name: 'new title' });
+
+					userEvent.click(screen.getByRole('link', { name: /Back to overview/ }));
+
+					await screen.findAllByText(/title/);
+					expect(screen.getByRole('heading', { name: 'new title' })).toBeInTheDocument();
 				});
 			});
 		});
