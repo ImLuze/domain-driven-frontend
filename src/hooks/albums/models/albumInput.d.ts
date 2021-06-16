@@ -1,4 +1,4 @@
-import { Album, Photo } from './album';
+import type { Album, Photo } from './album';
 
 /**
  * These are the types we will use throughout the application.

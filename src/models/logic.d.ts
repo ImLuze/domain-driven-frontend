@@ -1,9 +1,8 @@
-import { API } from './API';
+import type { API } from './API';
 
-interface Logic<O, M> {
-	operations: O;
-	models: M;
-}
+type Logic<O = undefined, M = undefined> = {}
+& (O extends object ? { operations: O } : {})
+& (M extends object ? { models: M } : {});
 
 /**
  * @summary
@@ -19,7 +18,9 @@ interface Logic<O, M> {
  * useTodoComponent => { isCompleted, title, body, dueDate, completeTodo, removeTodo }
  * useChessPiece => { type, color, currentPosition, pickPieceUp }
  */
-export type UILogic<P, O, M> = (props: P) => Logic<O, M>;
+export type UILogic<P = undefined, O = undefined, M = undefined> = (
+	props: P
+) => Logic<O, M>;
 
 /**
  * @summary
@@ -38,4 +39,6 @@ export type UILogic<P, O, M> = (props: P) => Logic<O, M>;
  * useTodos => { createTodo, completeTodo, changeDueDate, removeTodo, todos, completedTodos }
  * useChess => { pickPieceUp, movePiece, validMoves, pieces }
  */
-export type InteractionLogic<A extends API, O, M> = (api?: A) => Logic<O, M>;
+export type InteractionLogic<A extends API, O = undefined, M = undefined> = (
+	api?: A
+) => Logic<O, M>;

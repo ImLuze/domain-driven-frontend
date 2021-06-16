@@ -34,7 +34,7 @@ class AlbumMapper {
 		url: photo?.url || '',
 	});
 
-	albumDTOToAlbum = (album: Maybe<AlbumDTO>): Album => ({
+	albumDTOToAlbum = (album?: Maybe<AlbumDTO>): Album => ({
 		id: album?.id || '',
 		title: album?.title || '',
 		url: this.routes.albums.detail.replace(':id', album?.id || ''),

@@ -1,6 +1,6 @@
-import { FunctionComponent } from 'react';
-import { Routes } from '../hooks/routes/models/routes';
-import { UILogic } from './logic';
+import type { FunctionComponent } from 'react';
+import type { Routes } from '../hooks/routes/models/routes';
+import type { UILogic } from './logic';
 
 /**
  * A Page Component has direct access to the routes provided by the routes interaction layer.

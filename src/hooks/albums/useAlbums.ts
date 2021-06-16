@@ -2,7 +2,7 @@ import { ApolloError } from '@apollo/client';
 import event from '../../event';
 import { ApolloAPI } from '../../models/API';
 import { InteractionLogic } from '../../models/logic';
-import { Maybe, Album as AlbumDTO } from '../../models/schema';
+import { Album as AlbumDTO, Maybe } from '../../models/schema';
 import useRoutes from '../routes/useRoutes';
 import useValidator, { Validate } from '../validator/useValidator';
 import AlbumMapper from './AlbumMapper';
@@ -83,7 +83,7 @@ const useAlbums: InteractionLogic<AlbumsAPI, Operations, Models> = (albumsAPI) =
 		await deleteAlbumMutation({ variables: { id } });
 	};
 
-	const extractAlbumDTOsFromData = (data: AlbumsAPI['data']): Maybe<AlbumDTO>[] => {
+	const extractAlbumDTOsFromData = (data: AlbumsAPI['data']): (Maybe<AlbumDTO> | undefined)[] => {
 		if (data?.albums?.data) {
 			return data?.albums.data;
 		}

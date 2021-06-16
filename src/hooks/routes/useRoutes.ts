@@ -20,7 +20,7 @@ import { Routes } from './models/routes';
 
 type Models = Routes;
 
-const useRoutes: InteractionLogic<{}, {}, Models> = () => {
+const useRoutes: InteractionLogic<undefined, undefined, Models> = () => {
 	const history = useHistory();
 
 	const routes: Routes = {
@@ -45,7 +45,6 @@ const useRoutes: InteractionLogic<{}, {}, Models> = () => {
 
 	return {
 		models: routes,
-		operations: {},
 	};
 };
 
