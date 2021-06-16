@@ -1,4 +1,4 @@
-import { Limit } from '@mswjs/data/lib/glossary';
+import { Limit, Entity as MSWEntity } from '@mswjs/data/lib/glossary';
 import {
 	Album as AlbumDTO,
 	Photo as PhotoDTO,
@@ -20,3 +20,7 @@ export type Dictionary = Limit<{
 	todo: TodoDTO;
 	comment: WithID<CommentDTO>;
 }>;
+
+export type EntityName = keyof Dictionary;
+
+export type Entity<N extends EntityName> = MSWEntity<Dictionary, N>;
