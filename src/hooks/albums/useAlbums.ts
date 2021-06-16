@@ -1,4 +1,5 @@
 import { ApolloError } from '@apollo/client';
+import event from '../../event';
 import { ApolloAPI } from '../../models/API';
 import { InteractionLogic } from '../../models/logic';
 import { Maybe, Album as AlbumDTO } from '../../models/schema';
@@ -33,8 +34,12 @@ interface Models {
 	error?: ApolloError;
 }
 
+export interface AlbumEvents {
+	'albumCreated': (id: Album['id']) => void;
+}
+
 const useAlbums: InteractionLogic<AlbumsAPI, Operations, Models> = (albumsAPI) => {
-	const { operations: { goToAlbumDetail }, models: routes } = useRoutes();
+	const { models: routes } = useRoutes();
 	const [createAlbumMutation] = useCreateAlbum({ refetchQueries: ['getAlbums'] });
 	const [updateAlbumMutation] = useUpdateAlbum();
 	const [deleteAlbumMutation] = useDeleteAlbum();
@@ -59,7 +64,7 @@ const useAlbums: InteractionLogic<AlbumsAPI, Operations, Models> = (albumsAPI) =
 			const newAlbumId = result?.data?.createAlbum?.id;
 
 			if (newAlbumId) {
-				goToAlbumDetail(newAlbumId);
+				event.emit('albumCreated', newAlbumId);
 			}
 		}
 	};

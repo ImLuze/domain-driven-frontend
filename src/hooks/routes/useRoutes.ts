@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { useHistory } from 'react-router';
+import event from '../../event';
 import { InteractionLogic } from '../../models/logic';
 import { Album } from '../albums/models/album';
 import { Routes } from './models/routes';
@@ -16,16 +18,12 @@ import { Routes } from './models/routes';
  * good place to do it.
  */
 
-interface Operations {
-	goToAlbumDetail: (id: Album['id']) => void;
-}
-
 type Models = Routes;
 
-const useRoutes: InteractionLogic<{}, Operations, Models> = () => {
+const useRoutes: InteractionLogic<{}, {}, Models> = () => {
 	const history = useHistory();
 
-	const routes: Models = {
+	const routes: Routes = {
 		home: '/',
 		albums: {
 			add: '/albums/add',
@@ -33,15 +31,21 @@ const useRoutes: InteractionLogic<{}, Operations, Models> = () => {
 		},
 	};
 
-	const goToAlbumDetail: Operations['goToAlbumDetail'] = (id) => {
+	const goToAlbumDetail = (id: Album['id']): void => {
 		history.push(`${routes.albums.detail}`.replace(':id', id));
 	};
 
+	useEffect(() => {
+		event.on('albumCreated', goToAlbumDetail);
+
+		return () => {
+			event.removeListener('albumCreated', goToAlbumDetail);
+		};
+	}, [goToAlbumDetail]);
+
 	return {
 		models: routes,
-		operations: {
-			goToAlbumDetail,
-		},
+		operations: {},
 	};
 };
 

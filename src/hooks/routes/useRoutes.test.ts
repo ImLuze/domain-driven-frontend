@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { act } from 'react-dom/test-utils';
 import { MemoryRouter } from 'react-router';
+import events from '../../event';
 import useRoutes from './useRoutes';
 
 /**
@@ -34,13 +34,13 @@ describe('useRoutes', () => {
 		});
 	});
 
-	describe('has a set of operations', () => {
-		describe('goToAlbumDetail', () => {
+	describe('on event', () => {
+		describe('albumCreated', () => {
 			it('goes to the album detail page', () => {
-				const { result } = renderHook(useRoutes, { wrapper: MemoryRouter });
+				renderHook(useRoutes, { wrapper: MemoryRouter });
 				expect(mockHistoryPush).not.toHaveBeenCalled();
 
-				act(() => result.current.operations.goToAlbumDetail('0'));
+				events.emit('albumCreated', '0');
 				expect(mockHistoryPush).toHaveBeenCalledWith('/albums/0');
 			});
 		});

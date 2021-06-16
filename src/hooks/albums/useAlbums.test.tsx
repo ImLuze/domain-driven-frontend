@@ -2,6 +2,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { FunctionComponent } from 'react';
 import { ApolloError, ApolloProvider } from '@apollo/client';
 import { act } from 'react-dom/test-utils';
+import { graphql, RequestHandler } from 'msw';
 import client from '../../client';
 import useAlbums, { AlbumsAPI } from './useAlbums';
 import { Album } from './models/album';
@@ -12,6 +13,8 @@ import { CreateAlbumInput, UpdateAlbumInput } from './models/albumInput';
 import { ApolloAPI } from '../../models/API';
 import db from '../../mocks/db';
 import { Album as AlbumDTO } from '../../models/schema';
+import event from '../../event';
+import server from '../../mocks/server';
 
 /**
  * This is a Unit Test for an Interaction layer hook.
@@ -62,6 +65,10 @@ const EXPECTED_ALBUMS: Album[] = albums.map((album) => ({
 		url: photo?.url || '',
 	})) || [],
 }));
+
+const mockErrorResponse: RequestHandler = graphql.mutation('createAlbum', (req, res, ctx) => res(
+	ctx.data({ createAlbum: undefined }),
+));
 
 const wrapper: FunctionComponent = ({ children }) => (
 	<ApolloProvider client={client}>
@@ -181,11 +188,30 @@ describe('useAlbums', () => {
 				});
 
 				describe('when the createAlbum mutation is successful', () => {
-					it.todo('goes to the newly created album detail page');
+					it('emits an albumCreated event', async () => {
+						const emitEvent = jest.fn();
+						jest.spyOn(event, 'emit').mockImplementation(emitEvent);
+						const PHOTOS: CreateAlbumInput['photos'] = [{ alt: 'new photo', url: './new-photo' }];
+						const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
+						expect(emitEvent).not.toBeCalled();
+
+						await act(async () => result.current.operations.createAlbum({ title: 'abcde', photos: PHOTOS }));
+						expect(emitEvent).toBeCalledWith('albumCreated', expect.anything());
+					});
 				});
 
 				describe('when the createAlbum mutation is unsuccessful', () => {
-					it.todo('does not go to the newly created album detail page');
+					it('does not emit an albumCreated event', async () => {
+						server.use(mockErrorResponse);
+						const emitEvent = jest.fn();
+						jest.spyOn(event, 'emit').mockImplementation(emitEvent);
+						const PHOTOS: CreateAlbumInput['photos'] = [{ alt: 'new photo', url: './new-photo' }];
+						const { result } = renderHook(() => useAlbums(MOCK_SUCCESSFUL_ALBUMS), { wrapper });
+						expect(emitEvent).not.toBeCalled();
+
+						await act(async () => result.current.operations.createAlbum({ title: 'abcde', photos: PHOTOS }));
+						expect(emitEvent).not.toBeCalled();
+					});
 				});
 			});
 
