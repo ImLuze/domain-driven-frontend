@@ -1,0 +1,36 @@
+{
+	"configurations": [
+		{
+			"type": "chrome",
+			"request": "attach",
+			"name": "Attach to Chrome",
+			"port": 9222,
+			"webRoot": "${workspaceFolder}",
+			"sourceMaps": true,
+			"sourceMapPathOverrides": {
+				"webpack:/*": "${webRoot}/*"
+			},
+			"skipFiles": [
+				"${workspaceFolder}/node_modules/**/*.js",
+				"<node_internals>/**/*.js"
+			]
+		},
+		{
+			"type": "node",
+			"name": "Run tests",
+			"request": "launch",
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "neverOpen",
+			"disableOptimisticBPs": true,
+			"runtimeExecutable": "yarn",
+			"protocol": "inspector",
+			"cwd": "${workspaceFolder}",
+			"args": [
+				"test",
+				"test",
+				"--runInBand",
+				"--watchAll=false"
+			]
+		}
+	]
+}
